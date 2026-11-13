@@ -1,0 +1,6 @@
+{
+  "name": "Sankalp — AI Learning & Accountability Ecosystem",
+  "description": "Time-adaptive micro-lectures, active recall, spaced repetition, Socratic AI tutoring, parental accountability, and 70% refundable completion deposits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
