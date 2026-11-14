@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="public/mindforge-banner.png" alt="MindForge Banner" width="100%">
+</p>
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
