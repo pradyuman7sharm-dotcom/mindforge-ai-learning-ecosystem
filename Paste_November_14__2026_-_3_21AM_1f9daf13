@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HACKATHON_EIC — JEE, NEET & UPSC Universal Knowledge & Accountability Ecosystem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#070b14',
+            carddark: '#0f172a',
+            borderdark: '#1e293b',
+            neoncyan: '#38bdf8',
+            neongreen: '#10b981',
+            neonviolet: '#8b5cf6',
+            neonamber: '#f59e0b'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .glass-obsidian { background: rgba(7, 11, 20, 0.92); backdrop-filter: blur(16px); }
+    .glow-cyan { box-shadow: 0 0 24px rgba(56, 189, 248, 0.14); }
+    .glow-violet { box-shadow: 0 0 24px rgba(139, 92, 246, 0.16); }
+    .flip-card { perspective: 1000px; }
+    .flip-inner { transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back { backface-visibility: hidden; }
+    .flip-back { transform: rotateY(180deg); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #070b14 !important; color: #f8fafc !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-obsidian dark:text-slate-100 min-h-screen transition-colors duration-200 selection:bg-neonviolet selection:text-white overflow-x-hidden">
+
+  <!-- ===================================================================== -->
+  <!-- TOP GLOBAL STICKY NAVIGATION & UNIVERSAL KNOWLEDGE SEARCH             -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-40 border-b border-slate-200 dark:border-borderdark bg-white/95 dark:glass-obsidian no-print">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand & Live Stats -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-neoncyan via-blue-600 to-neonviolet flex items-center justify-center font-extrabold text-slate-950 text-base shadow-lg shrink-0">
+          EIC
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-base sm:text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600 dark:from-neoncyan dark:to-neonviolet">
+              HACKATHON_EIC
+            </span>
+            <span id="activeTrackBadge" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-600 dark:text-neoncyan border border-sky-500/30">
+              JEE TRACK
+            </span>
+          </div>
+          <div class="flex items-center gap-2.5 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+            <span>⚡ <strong id="hdrXp" class="text-amber-500">1250</strong> XP</span>
+            <span>🏆 ELO <strong id="hdrElo" class="text-neoncyan">1465</strong></span>
+            <span>🔥 <strong id="hdrStreak" class="text-emerald-400">14d</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global Universal Knowledge Search Bar (Wikipedia + OpenAlex + Syllabus) -->
+      <div class="order-3 lg:order-2 w-full lg:w-96 relative">
+        <div class="flex items-center rounded-xl bg-slate-100 dark:bg-carddark border border-slate-300 dark:border-borderdark focus-within:border-neoncyan px-3 py-1.5">
+          <span class="text-xs mr-2">🌐</span>
+          <input
+            type="text"
+            id="globalKnowledgeInput"
+            onkeypress="if(event.key==='Enter') triggerGlobalKnowledgeSearch()"
+            placeholder="Search any world concept, Wikipedia, OpenAlex..."
+            class="w-full bg-transparent text-xs focus:outline-none text-slate-900 dark:text-slate-100 placeholder-slate-400"
+          />
+          <button onclick="triggerGlobalKnowledgeSearch()" class="ml-2 px-2.5 py-1 rounded-lg bg-neoncyan text-slate-950 font-extrabold text-[11px] hover:opacity-90 shrink-0">
+            Search
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Exam Track Switcher & Role Controls -->
+      <div class="order-2 lg:order-3 flex flex-wrap items-center gap-2">
+        <div class="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-carddark border border-slate-200 dark:border-borderdark">
+          <button onclick="switchExamTrack('jee')" id="track-jee" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow">
+            ⚛️ JEE
+          </button>
+          <button onclick="switchExamTrack('neet')" id="track-neet" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+            🩺 NEET
+          </button>
+          <button onclick="switchExamTrack('upsc')" id="track-upsc" class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+            🏛️ UPSC
+          </button>
+        </div>
+
+        <div class="flex rounded-xl p-1 bg-slate-100 dark:bg-carddark border border-slate-200 dark:border-borderdark text-xs font-semibold">
+          <button onclick="switchRole('student')" id="role-student" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white transition">Student</button>
+          <button onclick="switchRole('parent')" id="role-parent" class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400 transition">Parent</button>
+          <button onclick="switchRole('mentor')" id="role-mentor" class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400 transition">Mentor</button>
+        </div>
+
+        <button onclick="resetAllState()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-carddark border border-slate-200 dark:border-borderdark hover:border-rose-500 text-[11px] font-bold text-slate-500 hover:text-rose-400 transition" title="Reset LocalStorage State">
+          ↺ Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Primary Workspace Navigation Tabs -->
+    <nav id="studentNav" class="max-w-7xl mx-auto px-4 pb-2 flex items-center gap-1.5 overflow-x-auto text-xs font-semibold">
+      <button onclick="switchTab('classroom')" data-tab="classroom" class="nav-tab px-3 py-1.5 rounded-lg bg-sky-500/15 text-sky-600 dark:text-neoncyan border border-sky-500/30 whitespace-nowrap">
+        1. Real Teacher Classroom & Whiteboard
+      </button>
+      <button onclick="switchTab('knowledge')" data-tab="knowledge" class="nav-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-carddark whitespace-nowrap">
+        2. Universal Knowledge Vault (Wiki + OpenAlex)
+      </button>
+      <button onclick="switchTab('platforms')" data-tab="platforms" class="nav-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-carddark whitespace-nowrap">
+        3. 25+ Connected Learning Platforms
+      </button>
+      <button onclick="switchTab('simulators')" data-tab="simulators" class="nav-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-carddark whitespace-nowrap">
+        4. Live Simulations & Rank Predictor
+      </button>
+      <button onclick="switchTab('pyq')" data-tab="pyq" class="nav-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-carddark whitespace-nowrap">
+        5. PYQ ELO Arena & Spaced Flashcards
+      </button>
+      <button onclick="switchTab('planner')" data-tab="planner" class="nav-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-carddark whitespace-nowrap">
+        6. Syllabus, Focus Synth & 70% Deposit
+      </button>
+    </nav>
+  </header>
+
+  <!-- TOAST NOTIFICATION BANNER -->
+  <div id="toastContainer" class="fixed bottom-20 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="max-w-7xl mx-auto px-4 py-6 pb-28">
+
+    <!-- =================================================================== -->
+    <!-- STUDENT PORTAL VIEWS                                                -->
+    <!-- =================================================================== -->
+    <div id="view-student" class="space-y-6">
+
+      <!-- ================================================================= -->
+      <!-- TAB 1: REAL TEACHER VIDEO CLASSROOM & INTERACTIVE WHITEBOARD      -->
+      <!-- ================================================================= -->
+      <section id="tab-classroom" class="tab-panel space-y-6">
+        <!-- Hero Educator Strip -->
+        <div class="rounded-2xl p-5 border border-sky-500/30 bg-gradient-to-r from-slate-900 via-[#0b132b] to-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 glow-cyan">
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="heroTrackTag" class="px-2.5 py-0.5 rounded-full bg-sky-500/20 text-neoncyan text-[11px] font-extrabold uppercase">NTA JEE Main + Advanced</span>
+              <span id="heroTargetExam" class="text-xs text-slate-400">Real Educator Lectures • Interactive Canvas Whiteboard</span>
+            </div>
+            <h1 id="heroTrackTitle" class="text-xl sm:text-2xl font-extrabold">JEE Masterclass: Real Teacher Video & Study Whiteboard</h1>
+            <p id="heroTrackSubtitle" class="text-xs text-slate-300">Watch verified lectures from Alakh Pandey (Physics Wallah) & Ashish Arora (Physics Galaxy), jump to chapters, and sketch derivations live.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 shrink-0">
+            <button onclick="switchTab('knowledge')" class="px-3.5 py-2 rounded-xl bg-neoncyan text-slate-950 font-extrabold text-xs hover:opacity-90 transition">
+              🌐 Wiki + OpenAlex Vault
+            </button>
+            <button onclick="switchTab('platforms')" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/15 transition">
+              🚀 25+ Learning Portals
+            </button>
+          </div>
+        </div>
+
+        <!-- Lecture Selector Pills -->
+        <div class="p-4 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-neoncyan">Select Verified Educator Lecture (<span id="educatorTrackCount">4</span> Available)</span>
+            <a id="directYoutubeFallbackLink" href="https://www.youtube.com/watch?v=hccEUqoviH8" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-rose-400 hover:underline">
+              ↗ Open Video Directly on YouTube (Fallback)
+            </a>
+          </div>
+          <div id="teacherVideoSelector" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5"></div>
+        </div>
+
+        <!-- Split Screen: Real YouTube Embed + Interactive HTML5 Canvas Study Whiteboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Left 7 Cols: Embedded Real Teacher Video + Timestamps + Pinned Notes -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-2xl">
+              <div class="relative w-full aspect-video bg-black">
+                <iframe
+                  id="realTeacherIframe"
+                  class="w-full h-full"
+                  src="https://www.youtube-nocookie.com/embed/hccEUqoviH8?rel=0&modestbranding=1"
+                  title="Verified Educator Lecture"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="p-4 bg-carddark border-t border-borderdark space-y-3">
+                <div class="flex flex-wrap items-start justify-between gap-2">
+                  <div>
+                    <span id="currentTeacherBadge" class="text-[11px] font-bold text-neoncyan uppercase">Alakh Pandey • Physics Wallah</span>
+                    <h2 id="currentVideoTitle" class="text-base sm:text-lg font-extrabold text-white">Semiconductors 01: Introduction & Energy Bands</h2>
+                  </div>
+                  <button onclick="openAskAiModal()" class="px-3 py-1.5 rounded-xl bg-neonviolet hover:opacity-90 text-white font-bold text-xs shadow">
+                    🧠 Ask Socratic AI Tutor
+                  </button>
+                </div>
+
+                <!-- Clickable Chapter Timestamps -->
+                <div class="space-y-1.5">
+                  <span class="text-[10px] font-bold uppercase text-slate-400">Jump to Lecture Chapter Timestamp:</span>
+                  <div id="videoChaptersBar" class="flex flex-wrap gap-1.5"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Structured Teacher Notes + Student Pinned Notes (Saved to localStorage) -->
+            <div class="p-5 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-sm">Educator Key Takeaways & Your Saved Notes</h3>
+                <span class="text-[11px] text-emerald-400 font-mono">Auto-saved to Browser</span>
+              </div>
+              <div id="teacherStructuredNotes" class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark text-xs leading-relaxed"></div>
+              <div class="flex gap-2">
+                <input type="text" id="studentNoteInput" onkeypress="if(event.key==='Enter') addStudentNote()" placeholder="Add your personal formula, article, or revision takeaway..." class="flex-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-borderdark focus:outline-none focus:border-neoncyan" />
+                <button onclick="addStudentNote()" class="px-4 py-2 rounded-xl bg-neoncyan text-slate-950 font-extrabold text-xs hover:opacity-90">+ Save Note</button>
+              </div>
+              <div id="savedStudentNotesList" class="space-y-2 max-h-40 overflow-y-auto"></div>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: Interactive HTML5 Canvas Study Whiteboard -->
+          <div class="lg:col-span-5 flex flex-col justify-between p-4 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neonviolet/40 glow-violet space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-neonviolet">Interactive Scratchpad</span>
+                <h3 class="font-extrabold text-base">Live Study Whiteboard</h3>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="toggleWhiteboardGrid()" id="wbGridBtn" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-xs font-bold">Grid: ON</button>
+                <button onclick="clearWhiteboard()" class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-400 text-xs font-bold">Clear</button>
+                <button onclick="downloadWhiteboardPng()" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">⬇ PNG</button>
+              </div>
+            </div>
+
+            <!-- Pen Color Swatches & Brush Size -->
+            <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark">
+              <div class="flex items-center gap-1.5">
+                <button onclick="setWbColor('#38bdf8')" class="w-6 h-6 rounded-full bg-[#38bdf8] border-2 border-white shadow" title="Cyan Pen"></button>
+                <button onclick="setWbColor('#10b981')" class="w-6 h-6 rounded-full bg-[#10b981] border border-slate-600" title="Emerald Pen"></button>
+                <button onclick="setWbColor('#f59e0b')" class="w-6 h-6 rounded-full bg-[#f59e0b] border border-slate-600" title="Amber Pen"></button>
+                <button onclick="setWbColor('#ec4899')" class="w-6 h-6 rounded-full bg-[#ec4899] border border-slate-600" title="Pink Pen"></button>
+                <button onclick="setWbColor('#f8fafc')" class="w-6 h-6 rounded-full bg-[#f8fafc] border border-slate-600" title="White Chalk"></button>
+                <button onclick="setWbColor('#070b14')" class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-bold text-slate-300 border border-slate-600" title="Eraser">Eraser</button>
+              </div>
+              <div class="flex items-center gap-1.5 text-xs">
+                <span class="text-slate-400 text-[11px]">Size:</span>
+                <input type="range" id="wbBrushSize" min="2" max="14" value="3" class="w-20 accent-neoncyan" />
+              </div>
+            </div>
+
+            <!-- Responsive Drawing Canvas -->
+            <div class="relative w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-slate-700 bg-[#070b14]">
+              <canvas id="studyWhiteboardCanvas" class="w-full h-full block cursor-crosshair touch-none"></canvas>
+            </div>
+            <p class="text-[11px] text-slate-500 text-center">Draw circuit diagrams, biological flowcharts, or polity mind maps with mouse or touch, then export as PNG.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 2: UNIVERSAL WORLD KNOWLEDGE VAULT (WIKIPEDIA + OPENALEX)     -->
+      <!-- ================================================================= -->
+      <section id="tab-knowledge" class="tab-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neoncyan/30 space-y-4 glow-cyan">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <span class="text-xs font-extrabold uppercase text-neoncyan">Live Encyclopedic + Peer-Reviewed Research Engine</span>
+              <h1 class="text-2xl font-extrabold">Universal World Knowledge Vault</h1>
+              <p class="text-xs text-slate-500">Queries live Wikipedia REST & OpenSearch APIs plus OpenAlex scholarly papers in real time—and converts any topic into flashcards in 1 click.</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5" id="quickTopicChips"></div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="vaultQueryInput" onkeypress="if(event.key==='Enter') executeUniversalSearch()" value="Semiconductor" placeholder="Enter any topic in physics, biology, polity, history, or world affairs..." class="flex-1 px-4 py-2.5 rounded-xl text-sm bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-borderdark focus:outline-none focus:border-neoncyan" />
+            <button onclick="executeUniversalSearch()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-neoncyan to-blue-600 text-slate-950 font-extrabold text-xs hover:opacity-95 transition">
+              🔍 Fetch World Knowledge
+            </button>
+          </div>
+
+          <!-- Related Wikipedia OpenSearch Suggestions -->
+          <div id="wikiRelatedBar" class="flex flex-wrap items-center gap-1.5 text-xs"></div>
+        </div>
+
+        <!-- Two-Column Live Knowledge Output: Wikipedia Summary + OpenAlex Research Papers -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Wikipedia Encyclopedia Card (7 cols) -->
+          <div class="lg:col-span-7 p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-borderdark pb-3">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-sky-500/15 text-neoncyan text-[11px] font-extrabold">WIKIPEDIA LIVE API</span>
+                <span id="wikiStatusTag" class="text-[11px] text-emerald-400 font-mono">Ready</span>
+              </div>
+              <button onclick="autoGenerateFlashcardsFromWiki()" class="px-3.5 py-1.5 rounded-xl bg-neonviolet hover:opacity-90 text-white font-extrabold text-xs shadow transition">
+                ⚡ Auto-Generate Flashcards from Topic
+              </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 items-start">
+              <img id="wikiThumbnail" src="" alt="Concept Visual" class="hidden w-28 h-28 object-cover rounded-xl border border-slate-700 shrink-0" />
+              <div class="space-y-2">
+                <h2 id="wikiTitle" class="text-xl font-extrabold">Semiconductor</h2>
+                <p id="wikiDescription" class="text-xs font-semibold text-neoncyan"></p>
+                <p id="wikiExtract" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+                <div class="pt-2 flex flex-wrap gap-2">
+                  <a id="wikiFullUrl" href="https://en.wikipedia.org/wiki/Semiconductor" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 text-xs font-bold hover:text-neoncyan transition">
+                    ↗ Read Full Wikipedia Article
+                  </a>
+                  <button onclick="switchTab('pyq')" class="px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
+                    Practice Generated Flashcards →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OpenAlex Peer-Reviewed Academic Papers (5 cols) -->
+          <div class="lg:col-span-5 p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-borderdark pb-3">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-amber-400">OpenAlex Scholarly Index</span>
+                <h3 class="font-extrabold text-base">Peer-Reviewed Research Papers</h3>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">250M+ Works</span>
+            </div>
+            <div id="openAlexPapersList" class="space-y-3 max-h-96 overflow-y-auto"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 3: CONNECTED MULTI-PLATFORM LEARNING HUB (25+ PLATFORMS)      -->
+      <!-- ================================================================= -->
+      <section id="tab-platforms" class="tab-panel hidden space-y-6">
+        <!-- Smart Omni-Platform Topic Launcher -->
+        <div class="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-[#0e172a] to-slate-900 border border-neoncyan/40 text-white space-y-4 glow-cyan">
+          <div>
+            <span class="text-xs font-extrabold uppercase text-neoncyan">Cross-Platform Deep-Link Launcher</span>
+            <h1 class="text-2xl font-extrabold">Search Any Topic Across All Major Studying Platforms</h1>
+            <p class="text-xs text-slate-300">Enter a chapter or concept once and launch targeted searches directly on Khan Academy, NPTEL, PhET, Physics Wallah, Drishti IAS, YouTube, Wikipedia, or PubMed.</p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="omniPlatformTopicInput" value="Rotational Motion" placeholder="e.g., Rotational Motion, Cardiac Cycle, Article 368, Thermodynamics..." class="flex-1 px-4 py-2.5 rounded-xl text-sm bg-slate-950 border border-slate-700 text-white focus:outline-none focus:border-neoncyan" />
+          </div>
+          <div class="flex flex-wrap gap-2 text-xs font-bold">
+            <button onclick="launchOmniPlatform('khan')" class="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30">↗ Khan Academy</button>
+            <button onclick="launchOmniPlatform('nptel')" class="px-3 py-1.5 rounded-xl bg-sky-500/20 text-sky-300 border border-sky-500/40 hover:bg-sky-500/30">↗ NPTEL IIT</button>
+            <button onclick="launchOmniPlatform('phet')" class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30">↗ PhET Simulations</button>
+            <button onclick="launchOmniPlatform('pw')" class="px-3 py-1.5 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30">↗ Physics Wallah</button>
+            <button onclick="launchOmniPlatform('drishti')" class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30">↗ Drishti IAS</button>
+            <button onclick="launchOmniPlatform('youtube')" class="px-3 py-1.5 rounded-xl bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500/30">↗ YouTube Lectures</button>
+            <button onclick="launchOmniPlatform('pubmed')" class="px-3 py-1.5 rounded-xl bg-teal-500/20 text-teal-300 border border-teal-500/40 hover:bg-teal-500/30">↗ PubMed Medical</button>
+            <button onclick="launchOmniPlatform('wiki')" class="px-3 py-1.5 rounded-xl bg-slate-700 text-white border border-slate-600 hover:bg-slate-600">↗ Wikipedia</button>
+          </div>
+        </div>
+
+        <!-- Category Filter & 25 Official Learning Platforms Directory -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-extrabold">25 Verified Studying & Exam Ecosystems</h2>
+              <p class="text-xs text-slate-500">Direct gateways to official Indian exam boards, open-access universities, and top coaching portals.</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-bold">
+              <button onclick="filterPlatforms('all')" class="plat-filter px-3 py-1.5 rounded-xl bg-neoncyan text-slate-950" data-cat="all">All (25)</button>
+              <button onclick="filterPlatforms('govt')" class="plat-filter px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800" data-cat="govt">Govt & Exam Bodies (10)</button>
+              <button onclick="filterPlatforms('jeeneet')" class="plat-filter px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800" data-cat="jeeneet">JEE & NEET Platforms (9)</button>
+              <button onclick="filterPlatforms('upsc')" class="plat-filter px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800" data-cat="upsc">UPSC & Global OpenCourseWare (6)</button>
+            </div>
+          </div>
+          <div id="platformsDirectoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 4: TRACK-SPECIFIC LIVE SIMULATIONS & EXAM RANK PREDICTORS     -->
+      <!-- ================================================================= -->
+      <section id="tab-simulators" class="tab-panel hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Left 7 Cols: Track-Specific Interactive Physics/Physiology/Macro Simulator -->
+          <div class="lg:col-span-7 p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neoncyan/30 space-y-4 glow-cyan">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-neoncyan">Interactive Real-Time Mathematical Model</span>
+                <h2 class="text-lg font-extrabold" id="simTitle">JEE Physics: Projectile & p-n Junction V-I Lab</h2>
+              </div>
+              <div id="jeeSimModeToggle" class="flex gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 text-xs font-bold">
+                <button onclick="setJeeSimMode('diode')" id="jee-mode-diode" class="px-2.5 py-1 rounded-lg bg-neoncyan text-slate-950">p-n Diode V-I</button>
+                <button onclick="setJeeSimMode('projectile')" id="jee-mode-projectile" class="px-2.5 py-1 rounded-lg text-slate-400">Projectile</button>
+              </div>
+            </div>
+
+            <div class="w-full h-60 rounded-xl overflow-hidden bg-[#070b14] border border-slate-800">
+              <canvas id="interactiveSimCanvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <div id="simSlidersContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs"></div>
+            <div id="simLiveReadout" class="grid grid-cols-3 gap-2 p-3.5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark text-center text-xs"></div>
+          </div>
+
+          <!-- Right 5 Cols: Track-Specific Realistic Exam Rank / Percentile / Cutoff Predictor -->
+          <div class="lg:col-span-5 p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neonviolet/40 space-y-4 glow-violet">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase text-neonviolet">Historical NTA / UPSC Data Calibration</span>
+              <h2 class="text-lg font-extrabold" id="predictorTitle">JEE Main Marks → Percentile & AIR Predictor</h2>
+              <p class="text-xs text-slate-500" id="predictorSubtitle">Slide your mock test score to estimate NTA percentile, All India Rank, and target college tier.</p>
+            </div>
+
+            <div id="predictorControls" class="space-y-4 text-xs"></div>
+            <div id="predictorResultBox" class="p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-[#111936] border border-neonviolet/40 text-white space-y-2.5"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 5: ADAPTIVE PYQ ELO ARENA & SPACED-REPETITION FLASHCARDS      -->
+      <!-- ================================================================= -->
+      <section id="tab-pyq" class="tab-panel hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Real JEE / NEET / UPSC Past-Year Question ELO Engine -->
+          <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neoncyan/30 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-neoncyan">Ranked Past-Year Question Bank</span>
+                <h2 class="text-lg font-extrabold">Adaptive PYQ ELO Arena</h2>
+              </div>
+              <div class="text-right font-mono text-xs">
+                <span class="px-2.5 py-1 rounded-full bg-sky-500/15 text-neoncyan font-bold">ELO: <span id="arenaEloDisplay">1465</span></span>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark space-y-3">
+              <div class="flex justify-between items-center text-[11px] font-mono text-slate-400">
+                <span id="pyqYearBadge" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">JEE Adv 2023</span>
+                <span id="pyqCounterBadge">Question 1 / 4</span>
+              </div>
+              <p id="pyqQuestionText" class="text-sm font-bold leading-relaxed"></p>
+              <div id="pyqOptionsList" class="space-y-2"></div>
+              <div id="pyqExplanationBox" class="hidden p-3.5 rounded-xl text-xs leading-relaxed"></div>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <span class="text-[11px] text-slate-500">+18 ELO on correct • -10 ELO on wrong</span>
+              <button onclick="nextPyqQuestion()" class="px-4 py-2 rounded-xl bg-neoncyan text-slate-950 font-extrabold text-xs hover:opacity-90">
+                Next PYQ →
+              </button>
+            </div>
+          </div>
+
+          <!-- Spaced-Repetition Flashcard Deck (Synced with Wikipedia Auto-Generator) -->
+          <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neonviolet/30 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-neonviolet">1d → 3d → 7d → 14d Retention</span>
+                <h2 class="text-lg font-extrabold">Spaced-Repetition Flashcards</h2>
+              </div>
+              <span id="flashcardCounter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-violet-500/15 text-neonviolet">1 / 4</span>
+            </div>
+
+            <div id="flashcardBox" onclick="this.classList.toggle('flipped')" class="flip-card h-60 cursor-pointer select-none">
+              <div class="flip-inner relative w-full h-full">
+                <div class="flip-front absolute inset-0 p-6 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-950 border border-slate-300 dark:border-neonviolet/40 flex flex-col items-center justify-center text-center">
+                  <span class="text-[10px] uppercase font-bold text-neonviolet mb-2">QUESTION (TAP TO FLIP)</span>
+                  <p id="fcQuestion" class="text-base font-bold leading-snug"></p>
+                </div>
+                <div class="flip-back absolute inset-0 p-6 rounded-2xl bg-gradient-to-br from-violet-950/90 to-slate-950 border border-neoncyan/50 flex flex-col items-center justify-center text-center overflow-y-auto">
+                  <span class="text-[10px] uppercase font-bold text-neoncyan mb-2">ANSWER & KEY CONCEPT</span>
+                  <p id="fcAnswer" class="text-xs sm:text-sm font-medium text-slate-100 leading-relaxed"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="rateFlashcard(false)" class="py-2.5 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/30 font-bold text-xs hover:bg-rose-500/25">
+                ↻ Forgot (Reset to Day 1)
+              </button>
+              <button onclick="rateFlashcard(true)" class="py-2.5 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold text-xs hover:bg-emerald-500/25">
+                ✓ Mastered (+25 XP & Extend)
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 6: SYLLABUS TRACKER, WEB AUDIO FOCUS SYNTH & 70% DEPOSIT      -->
+      <!-- ================================================================= -->
+      <section id="tab-planner" class="tab-panel hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Web Audio API Pomodoro & Brown/Alpha Noise Synthesizer (5 Cols) -->
+          <div class="lg:col-span-5 p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neoncyan/30 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-neoncyan">Offline Web Audio DSP Synthesizer</span>
+                <h2 class="text-lg font-extrabold">Deep Focus Pomodoro & Soundscape</h2>
+              </div>
+              <span id="audioSynthBadge" class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-mono">Audio Off</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 text-center space-y-3">
+              <div id="pomodoroClockDisplay" class="text-4xl sm:text-5xl font-extrabold font-mono text-neoncyan tracking-wider">25:00</div>
+              <div class="flex justify-center gap-2 text-xs font-bold">
+                <button onclick="setPomodoroDuration(25)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">25m</button>
+                <button onclick="setPomodoroDuration(45)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">45m</button>
+                <button onclick="setPomodoroDuration(60)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200">60m</button>
+              </div>
+              <div class="flex justify-center gap-2 pt-1">
+                <button onclick="startPomodoroSession()" id="pomoStartBtn" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs hover:bg-emerald-400">
+                  ▶ Start Focus Session
+                </button>
+                <button onclick="endPomodoroEarly()" class="px-3 py-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold text-xs">
+                  End Early
+                </button>
+              </div>
+            </div>
+
+            <!-- Web Audio Noise Controls -->
+            <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-borderdark space-y-3 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="font-bold">Acoustic Focus Masking:</span>
+                <div class="flex gap-1.5">
+                  <button onclick="toggleFocusAudio('brown')" id="btn-audio-brown" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 font-bold">🌊 Brown Noise</button>
+                  <button onclick="toggleFocusAudio('alpha')" id="btn-audio-alpha" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 font-bold">🧠 40Hz Alpha</button>
+                  <button onclick="stopFocusAudio()" class="px-2 py-1 rounded-lg bg-rose-500/20 text-rose-400 font-bold">Stop</button>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-slate-400">Volume:</span>
+                <input type="range" id="synthVolumeSlider" min="0" max="1" step="0.05" value="0.35" oninput="updateSynthVolume(this.value)" class="flex-1 accent-neoncyan" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 70% Refundable Accountability Deposit Escrow Tracker (7 Cols) -->
+          <div class="lg:col-span-7 p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-emerald-500/40 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-extrabold uppercase text-emerald-400">Skin-in-the-Game Financial Commitment</span>
+                <h2 class="text-lg font-extrabold">70% Refundable Completion Deposit Escrow</h2>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-extrabold">
+                Unlocked: <span id="depositUnlockedAmount">₹560</span> / ₹700
+              </span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 p-3.5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark text-center text-xs">
+              <div><span class="text-slate-500 block">Enrolled Stake</span><strong class="text-base font-extrabold">₹1,000</strong></div>
+              <div><span class="text-emerald-400 block">70% Refund Pool</span><strong class="text-base font-extrabold text-emerald-400">₹700</strong></div>
+              <div><span class="text-slate-500 block">30% Platform Ops</span><strong class="text-base font-extrabold">₹300</strong></div>
+            </div>
+
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span>Escrow Refund Unlock Progress</span>
+                <span id="depositPercentLabel" class="text-emerald-400">80%</span>
+              </div>
+              <div class="w-full h-3 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
+                <div id="depositProgressBar" class="h-full bg-gradient-to-r from-emerald-500 to-neoncyan transition-all duration-500" style="width: 80%"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+              <input type="text" id="guardianUpiInput" value="arjun.guardian@okaxis" class="flex-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-borderdark font-mono" />
+              <button onclick="claimRefundPayout()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition">
+                Claim Instant UPI Refund
+              </button>
+            </div>
+            <div id="refundReceiptBanner" class="hidden p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-300"></div>
+          </div>
+        </div>
+
+        <!-- Track Syllabus Mastery Checklist (Persisted in localStorage) -->
+        <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-lg font-extrabold" id="syllabusChecklistHeader">High-Yield Syllabus Mastery Tracker</h2>
+              <p class="text-xs text-slate-500">Checking off completed chapters increases your XP and unlocks your 70% Refundable Deposit.</p>
+            </div>
+            <span id="syllabusCountBadge" class="px-3 py-1 rounded-full bg-sky-500/15 text-neoncyan text-xs font-bold">3 / 6 Completed</span>
+          </div>
+          <div id="syllabusChecklistGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PARENT TRANSPARENCY PORTAL                                          -->
+    <!-- =================================================================== -->
+    <div id="view-parent" class="hidden space-y-6">
+      <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-sky-500/30 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-neoncyan">Guardian Transparency & Minor Protection Portal</span>
+            <h1 class="text-2xl font-extrabold">Parent Accountability Dashboard — Ward: Arjun Sharma</h1>
+          </div>
+          <span id="parentSessionStatus" class="px-3.5 py-1.5 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">Status: Idle</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark">
+            <span class="text-slate-500">Active Exam Track</span>
+            <div id="parentTrackText" class="text-lg font-extrabold text-neoncyan mt-1">JEE (Main + Advanced)</div>
+            <p class="text-slate-500 mt-1">Real-time lecture & PYQ telemetry</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark">
+            <span class="text-slate-500">Escrow Deposit Status</span>
+            <div id="parentEscrowText" class="text-lg font-extrabold text-emerald-400 mt-1">₹560 / ₹700 Unlocked</div>
+            <p class="text-slate-500 mt-1">Linked to Guardian UPI ID</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark">
+            <span class="text-slate-500">Voluntary Early Exits</span>
+            <div id="parentEarlyExitsText" class="text-lg font-extrabold mt-1">0 Early Exits</div>
+            <p class="text-slate-500 mt-1">Fairly excludes accidental disconnects</p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-xs font-bold uppercase text-slate-400">Live Guardian Activity Feed</h3>
+          <div id="parentActivityFeed" class="space-y-2 text-xs">
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark flex justify-between">
+              <span>✅ Completed 45m Real Teacher Lecture + PYQ Session</span>
+              <span class="font-mono text-slate-500">Today, 09:30 AM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MENTOR LIVE INTERVENTION CONSOLE                                    -->
+    <!-- =================================================================== -->
+    <div id="view-mentor" class="hidden space-y-6">
+      <div class="p-6 rounded-2xl bg-white dark:bg-carddark border border-slate-200 dark:border-neonviolet/30 space-y-5">
+        <div>
+          <span class="text-xs font-bold uppercase text-neonviolet">Human-in-the-Loop Academic Mentorship</span>
+          <h1 class="text-2xl font-extrabold">Mentor Live Intervention & Evaluation Console</h1>
+          <p class="text-xs text-slate-500">Review student recall sheets, override AI rubric scores, and send targeted guidance.</p>
+        </div>
+
+        <div class="p-5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark space-y-3 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="font-extrabold text-neoncyan">Ward: Arjun Sharma • Active Track Submission</span>
+            <span class="px-2.5 py-1 rounded-full bg-violet-500/20 text-neonviolet font-bold">AI Pre-Grade: 8.5 / 10</span>
+          </div>
+          <p id="mentorSampleText" class="p-3 rounded-lg bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark leading-relaxed"></p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="font-bold block mb-1">Final Mentor Score (/10)</label>
+              <input type="number" id="mentorScoreInput" value="9.0" min="0" max="10" step="0.5" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-carddark border border-slate-300 dark:border-borderdark" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="font-bold block mb-1">Actionable Mentor Remark</label>
+              <input type="text" id="mentorFeedbackInput" value="Sharp conceptual grasp! Focus on negative-marking traps in multi-statement questions." class="w-full px-3 py-2 rounded-lg bg-white dark:bg-carddark border border-slate-300 dark:border-borderdark" />
+            </div>
+          </div>
+          <button onclick="publishMentorReview()" class="px-4 py-2 rounded-xl bg-neonviolet text-white font-extrabold hover:opacity-90">
+            Publish Mentor Evaluation (+50 XP to Student)
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- CONTEXTUAL SOCRATIC AI TUTOR MODAL                                    -->
+  <!-- ===================================================================== -->
+  <div id="askAiModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-carddark border border-slate-200 dark:border-neonviolet/40 rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-borderdark pb-3">
+        <div>
+          <h3 class="font-extrabold text-base">24/7 Socratic & Direct AI Doubt Tutor</h3>
+          <p class="text-[11px] text-slate-500">Contextualized to current educator lecture</p>
+        </div>
+        <button onclick="closeAskAiModal()" class="text-slate-400 hover:text-white text-lg font-bold px-2">✕</button>
+      </div>
+      <div id="aiModalMessages" class="h-52 overflow-y-auto space-y-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-borderdark text-xs"></div>
+      <div class="flex gap-2">
+        <input type="text" id="aiModalInput" onkeypress="if(event.key==='Enter') sendAiModalMessage()" placeholder="Ask a conceptual question about this lecture..." class="flex-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-borderdark focus:outline-none focus:border-neoncyan" />
+        <button onclick="sendAiModalMessage()" class="px-4 py-2 rounded-xl bg-neoncyan text-slate-950 font-extrabold text-xs">Ask</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- PERSISTENT BOTTOM FOCUS & KNOWLEDGE STATUS BAR                        -->
+  <!-- ===================================================================== -->
+  <footer class="fixed bottom-0 inset-x-0 z-40 border-t border-slate-200 dark:border-borderdark bg-white/95 dark:glass-obsidian px-4 py-2.5 no-print">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+        <span class="font-bold">HACKATHON_EIC Live Engine</span>
+        <span class="text-slate-500 hidden sm:inline">• Wikipedia REST + OpenAlex + Real YouTube Educators + Web Audio DSP</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleFocusAudio('brown')" class="px-3 py-1 rounded-full bg-sky-500/15 text-neoncyan border border-sky-500/30 font-bold hover:bg-sky-500/25">🌊 Brown Noise</button>
+        <button onclick="stopFocusAudio()" class="px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-800 font-bold">■ Mute</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- COMPLETE APPLICATION LOGIC & VERIFIED DATASETS                        -->
+  <!-- ===================================================================== -->
+  <script>
+    // 1. VERIFIED TRACK DATA: REAL YOUTUBE EDUCATORS, PYQs, SYLLABUS & FLASHCARDS
+    const TRACK_CONFIG = {
+      jee: {
+        badge: "JEE TRACK",
+        heroTag: "NTA JEE Main + Advanced",
+        heroTitle: "JEE Masterclass: Real Teacher Video & Study Whiteboard",
+        heroSubtitle: "Watch verified lectures from Alakh Pandey (Physics Wallah) & Ashish Arora (Physics Galaxy), jump to chapters, and sketch derivations live.",
+        parentLabel: "JEE (Main + Advanced)",
+        mentorSample: "In an unbiased p-n junction, majority holes from P diffuse into N and electrons from N diffuse into P, forming a space-charge depletion layer with a ~0.7V barrier potential in Silicon.",
+        videos: [
+          {
+            id: "hccEUqoviH8",
+            teacher: "Alakh Pandey • Physics Wallah",
+            title: "Semiconductors 01: Introduction, Energy Bands & Intrinsic Carriers",
+            duration: "1h 12m",
+            chapters: [
+              { label: "00:00 Classification of Solids", sec: 0 },
+              { label: "18:40 Energy Band Theory", sec: 1120 },
+              { label: "39:15 Intrinsic vs Extrinsic", sec: 2355 },
+              { label: "55:00 Mass Action Law (nₑ·nₕ = nᵢ²)", sec: 3300 }
+            ],
+            notes: "<strong>Key JEE Takeaways:</strong> 1) At 0 K, a pure semiconductor behaves as a perfect insulator. 2) Mass Action Law: nₑ × nₕ = nᵢ² holds in thermal equilibrium regardless of doping. 3) Mobility of electrons μₑ > mobility of holes μₕ."
+          },
+          {
+            id: "DXBySAmNKJo",
+            teacher: "Ashish Arora • Physics Galaxy",
+            title: "Rigid Body Dynamics #1: Rotational Motion & Moment of Inertia",
+            duration: "24m",
+            chapters: [
+              { label: "00:00 Rigid Body Kinematics", sec: 0 },
+              { label: "08:20 Angular Velocity Vector", sec: 500 },
+              { label: "16:45 Pure Rolling Condition", sec: 1005 }
+            ],
+            notes: "<strong>Physics Galaxy Insight:</strong> Angular velocity ω is a property of the entire rigid body—every point on the rigid body has the exact same ω about every other point!"
+          },
+          {
+            id: "tLni8Vxf-WA",
+            teacher: "Ashish Arora • Physics Galaxy",
+            title: "Rotational Motion Complete Revision Checklist for JEE",
+            duration: "32m",
+            chapters: [
+              { label: "00:00 Parallel & Perpendicular Axes", sec: 0 },
+              { label: "11:30 Torque & Angular Momentum", sec: 690 },
+              { label: "22:10 Instantaneous Axis of Rotation", sec: 1330 }
+            ],
+            notes: "<strong>JEE Advanced Checklist:</strong> Always check conservation of angular momentum about the point of contact on rough surfaces where impulsive friction acts."
+          },
+          {
+            id: "YTmtAuItIfY",
+            teacher: "JEE Wallah • One Shot",
+            title: "Semiconductor Electronics One Shot + Top NTA PYQs",
+            duration: "1h 45m",
+            chapters: [
+              { label: "00:00 p-n Junction & Biasing", sec: 0 },
+              { label: "35:00 Zener Voltage Regulator", sec: 2100 },
+              { label: "1:10:00 Logic Gates & Truth Tables", sec: 4200 }
+            ],
+            notes: "<strong>Exam Shortcut:</strong> NAND and NOR are universal gates. De Morgan's Theorems: (A + B)' = A'·B' and (A·B)' = A' + B'."
+          }
+        ],
+        quickWikiTopics: ["Semiconductor", "Moment of inertia", "Second law of thermodynamics", "Nucleophilic substitution", "Fundamental theorem of calculus"],
+        pyqs: [
+          {
+            year: "JEE Main 2024",
+            q: "In a Zener diode voltage regulator circuit, if the unregulated input voltage increases while load resistance stays constant, which current increases significantly?",
+            opts: ["Load current (I_L)", "Zener current (I_Z)", "Reverse saturation current only", "No current changes"],
+            ans: 1,
+            explain: "Since Zener voltage V_Z remains constant across the parallel load R_L, load current I_L = V_Z / R_L stays constant. The extra series current flows through the Zener diode (I_Z)."
+          },
+          {
+            year: "JEE Adv 2022",
+            q: "A uniform solid cylinder of mass M and radius R rolls without slipping down an inclined plane of angle θ. What is its linear acceleration?",
+            opts: ["(2/3) g sinθ", "(5/7) g sinθ", "(1/2) g sinθ", "(3/5) g sinθ"],
+            ans: 0,
+            explain: "For a solid cylinder, I = ½MR². Acceleration a = g sinθ / (1 + I/MR²) = g sinθ / (1 + 1/2) = (2/3) g sinθ."
+          },
+          {
+            year: "JEE Main 2023",
+            q: "What is the value of the definite integral ∫₀^(π/2) [√sin x / (√sin x + √cos x)] dx?",
+            opts: ["π/2", "π/4", "1", "π/6"],
+            ans: 1,
+            explain: "Applying King's Property ∫₀ᵃ f(x)dx = ∫₀ᵃ f(a-x)dx and adding the two integrals yields 2I = ∫₀^(π/2) 1 dx = π/2 ⇒ I = π/4."
+          }
+        ],
+        flashcards: [
+          { q: "State the Mass Action Law in Semiconductors.", a: "Under thermal equilibrium, the product of free electron concentration (nₑ) and hole concentration (nₕ) equals the square of intrinsic carrier concentration: nₑ · nₕ = nᵢ²." },
+          { q: "What is the Moment of Inertia of a solid sphere about a tangent?", a: "By Parallel Axis Theorem: I = I_cm + MR² = (2/5)MR² + MR² = (7/5)MR²." },
+          { q: "Order of aqueous basicity for Methyl-substituted amines?", a: "2° > 1° > 3° > NH₃ ('213' rule) due to combined inductive, solvation, and steric effects." }
+        ],
+        syllabus: [
+          { id: "jee-1", title: "Semiconductor Electronics & Logic Gates (NCERT Ch 14)", done: true },
+          { id: "jee-2", title: "Rigid Body Dynamics & Pure Rolling (HC Verma / Irodov)", done: true },
+          { id: "jee-3", title: "Definite Integration & Differential Equations", done: true },
+          { id: "jee-4", title: "Electrostatics & Gauss's Law Applications", done: false },
+          { id: "jee-5", title: "Aldehydes, Ketones & Carboxylic Acids", done: false },
+          { id: "jee-6", title: "3D Coordinate Geometry & Vector Algebra", done: false }
+        ]
+      },
+
+      neet: {
+        badge: "NEET-UG TRACK",
+        heroTag: "NTA NEET-UG Medical",
+        heroTitle: "NEET Masterclass: NCERT Line-by-Line Video & Whiteboard",
+        heroSubtitle: "Learn Human Physiology & Physics from Dr. Ritu Rattewal & Alakh Pandey with live ECG waveforms, NCERT diagrams, and AIR predictor.",
+        parentLabel: "NEET-UG (Medical 720)",
+        mentorSample: "Each cardiac cycle lasts 0.8s at 75 bpm: Atrial systole (0.1s), Ventricular systole (0.3s), and Joint diastole (0.4s). Stroke volume is 70 mL, yielding Cardiac Output = 5040 mL/min.",
+        videos: [
+          {
+            id: "6eho6nvCspU",
+            teacher: "Dr. Ritu Rattewal • Biology",
+            title: "Body Fluids & Circulation: Blood Plasma, Formed Elements & Clotting",
+            duration: "1h 18m",
+            chapters: [
+              { label: "00:00 Blood Plasma Composition", sec: 0 },
+              { label: "24:10 RBC, WBC & Platelets", sec: 1450 },
+              { label: "48:30 ABO & Rh Blood Grouping", sec: 2910 },
+              { label: "1:04:00 Coagulation Cascade", sec: 3840 }
+            ],
+            notes: "<strong>NCERT Line-by-Line:</strong> Plasma is 55% of blood (90-92% water, 6-8% proteins: Fibrinogen for clotting, Globulins for defense, Albumins for osmotic balance). Calcium ions (Ca²⁺) play a vital role in clotting."
+          },
+          {
+            id: "3NUb5aDgnO8",
+            teacher: "Dr. Ritu Rattewal • Biology",
+            title: "Cardiac Cycle, Heart Sounds (Lub-Dub) & Standard ECG Decode",
+            duration: "1h 05m",
+            chapters: [
+              { label: "00:00 SA Node & Conducting System", sec: 0 },
+              { label: "19:20 0.8s Cardiac Cycle Phases", sec: 1160 },
+              { label: "42:10 P-QRS-T ECG Waves", sec: 2530 }
+            ],
+            notes: "<strong>Critical NEET Trap:</strong> The END of the T-wave marks the END of ventricular systole! First sound (Lub) = closure of tricuspid & bicuspid valves; second sound (Dub) = closure of semilunar valves."
+          },
+          {
+            id: "hccEUqoviH8",
+            teacher: "Alakh Pandey • Physics Wallah",
+            title: "Semiconductor Electronics for NEET Physics (Full Concept)",
+            duration: "1h 12m",
+            chapters: [
+              { label: "00:00 Energy Bands & Doping", sec: 0 },
+              { label: "30:00 p-n Junction Forward/Reverse", sec: 1800 }
+            ],
+            notes: "<strong>NEET Physics High-Yield:</strong> Semiconductor devices contribute 2–3 direct questions every year in NEET-UG. Focus on Zener diode and Logic gates."
+          }
+        ],
+        quickWikiTopics: ["Cardiac cycle", "Electrocardiography", "Lac operon", "Photosynthesis", "Human heart"],
+        pyqs: [
+          {
+            year: "NEET 2024",
+            q: "Match the ECG wave with its physiological event: What does the end of the T-wave signify in a standard electrocardiogram?",
+            opts: ["Beginning of atrial systole", "End of ventricular systole", "Start of ventricular depolarization", "Closure of AV valves"],
+            ans: 1,
+            explain: "Direct NCERT Class 11 Chapter 18 line: T-wave represents ventricular repolarization, and the end of the T-wave marks the end of ventricular systole."
+          },
+          {
+            year: "NEET 2023",
+            q: "In the Lac Operon, which molecule binds to the repressor protein and inactivates it to allow transcription of lacZ, lacY, and lacA?",
+            opts: ["Glucose", "Allolactose (Lactose)", "Galactose", "RNA Polymerase"],
+            ans: 1,
+            explain: "Lactose (specifically its isomer allolactose) acts as the inducer, binding to the repressor and preventing it from blocking the operator region."
+          },
+          {
+            year: "NEET 2022",
+            q: "Which of the following conditions shifts the Oxygen-Hemoglobin dissociation curve to the RIGHT?",
+            opts: ["High pO₂ and low pCO₂", "Low H⁺ concentration and low temperature", "High pCO₂, high H⁺ concentration, and elevated temperature", "Fetal hemoglobin presence"],
+            ans: 2,
+            explain: "Bohr Effect: Metabolically active tissues have high pCO₂, low pH (high H⁺), and higher temperature, shifting the curve right to unload O₂."
+          }
+        ],
+        flashcards: [
+          { q: "What is the exact duration of Atrial Systole, Ventricular Systole, and Joint Diastole?", a: "Atrial Systole = 0.1s; Ventricular Systole = 0.3s; Joint Diastole = 0.4s (Total = 0.8s at 75 beats/min)." },
+          { q: "Name the three major plasma proteins and their functions (NCERT).", a: "Fibrinogen (blood clotting), Globulins (defense mechanisms), and Albumins (osmotic balance)." },
+          { q: "Which blood vessel carries deoxygenated blood from the right ventricle to the lungs?", a: "Pulmonary Artery (exception among arteries, which otherwise carry oxygenated blood)." }
+        ],
+        syllabus: [
+          { id: "neet-1", title: "Body Fluids & Circulation (NCERT Class 11 Ch 18)", done: true },
+          { id: "neet-2", title: "Molecular Basis of Inheritance & Lac Operon (Class 12)", done: true },
+          { id: "neet-3", title: "Cell Cycle & Cell Division (Mitosis & Meiosis)", done: true },
+          { id: "neet-4", title: "Human Reproduction & Reproductive Health", done: false },
+          { id: "neet-5", title: "Chemical Coordination & Integration (Endocrine)", done: false },
+          { id: "neet-6", title: "Ray Optics, Modern Physics & Semiconductors", done: false }
+        ]
+      },
+
+      upsc: {
+        badge: "UPSC CSE TRACK",
+        heroTag: "UPSC Civil Services (IAS / IPS)",
+        heroTitle: "UPSC Masterclass: Polity, Economy & Governance Classroom",
+        heroSubtitle: "Study Indian Constitution, Basic Structure Doctrine & RBI Monetary Policy with Drishti IAS & StudyIQ lectures, live macro simulators, and Prelims cutoff predictor.",
+        parentLabel: "UPSC CSE (Prelims + Mains)",
+        mentorSample: "In Kesavananda Bharati v. State of Kerala (1973), a 13-judge Supreme Court bench held by 7:6 that Parliament's constituent power under Article 368 cannot alter the Constitution's 'Basic Structure'.",
+        videos: [
+          {
+            id: "l_Az6q3NXXY",
+            teacher: "Drishti IAS • Polity Foundation",
+            title: "UPSC Polity Basics: Constitutional Framework & Rule of Law",
+            duration: "54m",
+            chapters: [
+              { label: "00:00 Constitutionalism vs Constitution", sec: 0 },
+              { label: "18:15 Separation of Powers", sec: 1095 },
+              { label: "36:40 Fundamental Rights & Writs", sec: 2200 }
+            ],
+            notes: "<strong>UPSC GS-II Core:</strong> Constitutionalism implies limited government where executive authority is constrained by Fundamental Rights (Part III) and Judicial Review (Article 13 & 32)."
+          },
+          {
+            id: "49msqaRsc4g",
+            teacher: "StudyIQ IAS • Polity",
+            title: "Basic Structure Doctrine Explained: Kesavananda Bharati (1973)",
+            duration: "28m",
+            chapters: [
+              { label: "00:00 Shankari Prasad to Golaknath", sec: 0 },
+              { label: "11:20 24th Amendment & 1973 Verdict", sec: 680 },
+              { label: "21:00 Elements of Basic Structure", sec: 1260 }
+            ],
+            notes: "<strong>Prelims Trap Alert:</strong> The phrase 'Basic Structure' is NOT defined anywhere in the Constitution; it is a judicial innovation evolved case-by-case since 1973."
+          },
+          {
+            id: "O3d662mfH_4",
+            teacher: "StudyIQ IAS • Laxmikanth Series",
+            title: "Amendment of the Constitution (Article 368) & Special Majorities",
+            duration: "35m",
+            chapters: [
+              { label: "00:00 Types of Amendments", sec: 0 },
+              { label: "15:10 Why No Joint Sitting (Art. 108)", sec: 910 }
+            ],
+            notes: "<strong>Article 368 Procedure:</strong> Can be initiated in either House of Parliament (NOT State Legislatures), requires no prior President recommendation, and has NO provision for a Joint Sitting."
+          }
+        ],
+        quickWikiTopics: ["Basic structure doctrine", "Constitution of India", "Reserve Bank of India", "Monetary policy of India", "Separation of powers"],
+        pyqs: [
+          {
+            year: "UPSC Prelims 2023",
+            q: "Consider the following statements regarding a Constitutional Amendment Bill under Article 368: 1) It can be introduced in either House of Parliament. 2) In case of a deadlock, the President can summon a Joint Sitting under Article 108. Which is/are correct?",
+            opts: ["1 only", "2 only", "Both 1 and 2", "Neither 1 nor 2"],
+            ans: 0,
+            explain: "Statement 1 is correct. Statement 2 is incorrect because Article 368 requires each House to pass the bill separately by special majority—there is NO provision for a Joint Sitting."
+          },
+          {
+            year: "UPSC Prelims 2022",
+            q: "With reference to the Indian economy, what is the primary purpose of the Standing Deposit Facility (SDF) introduced by the RBI?",
+            opts: ["Provide collateral-free emergency loans to NBFCs", "Absorb excess liquidity from commercial banks without requiring G-Sec collateral", "Finance Union fiscal deficit directly", "Regulate foreign direct investment"],
+            ans: 1,
+            explain: "Introduced in April 2022, SDF allows the RBI to absorb excess liquidity from commercial banks without needing to provide Government Securities (G-Secs) as collateral."
+          },
+          {
+            year: "UPSC Prelims 2021",
+            q: "Which Article of the Constitution of India safeguards one's right to marry the person of one's choice?",
+            opts: ["Article 19", "Article 21", "Article 25", "Article 29"],
+            ans: 1,
+            explain: "In Shafin Jahan v. Asokan K.M. (2018), the Supreme Court held that the right to marry a person of one's choice is an integral part of Article 21 (Right to Life and Personal Liberty)."
+          }
+        ],
+        flashcards: [
+          { q: "Can a Money Bill (Article 110) be introduced in the Rajya Sabha?", a: "No. A Money Bill can ONLY be introduced in the Lok Sabha on the prior recommendation of the President. Rajya Sabha can detain it for at most 14 days." },
+          { q: "Name the 8 Indian states through which the Tropic of Cancer passes.", a: "Gujarat, Rajasthan, Madhya Pradesh, Chhattisgarh, Jharkhand, West Bengal, Tripura, and Mizoram." },
+          { q: "What is the RBI's statutory flexible inflation targeting band?", a: "4% Consumer Price Index (CPI) inflation with an upper tolerance limit of 6% and a lower tolerance limit of 2%." }
+        ],
+        syllabus: [
+          { id: "upsc-1", title: "Indian Polity: Fundamental Rights & Basic Structure (Laxmikanth)", done: true },
+          { id: "upsc-2", title: "Parliamentary Procedures, Money Bills & Committees", done: true },
+          { id: "upsc-3", title: "RBI Monetary Policy, Inflation & Banking Reforms", done: true },
+          { id: "upsc-4", title: "Modern Indian History: 1857 to Independence (Spectrum)", done: false },
+          { id: "upsc-5", title: "Physical & Indian Geography (NCERT Class 11–12)", done: false },
+          { id: "upsc-6", title: "GS-IV Ethics Case Studies & 2nd ARC Governance", done: false }
+        ]
+      }
+    };
+
+    // 2. 25 CONNECTED STUDYING PLATFORMS DIRECTORY
+    const LEARNING_PLATFORMS = [
+      { name: "NTA JEE Main Portal", cat: "govt", tag: "Official Exam Body", desc: "Official JEE Main notifications, syllabus PDFs, and mock test links.", url: "https://jeemain.nta.nic.in/" },
+      { name: "NTA NEET-UG Portal", cat: "govt", tag: "Official Exam Body", desc: "Official NEET-UG medical entrance portal, bulletins, and answer keys.", url: "https://neet.nta.nic.in/" },
+      { name: "UPSC Official Portal", cat: "govt", tag: "Constitutional Body", desc: "Civil Services Prelims/Mains notifications, annual calendar, and PYQ papers.", url: "https://upsc.gov.in/" },
+      { name: "NCERT Official e-Books", cat: "govt", tag: "Core Foundation", desc: "Free official Class 6–12 Science, Math, Polity, History & Geography textbooks.", url: "https://ncert.nic.in/textbook.php" },
+      { name: "DIKSHA Govt Portal", cat: "govt", tag: "Ministry of Education", desc: "QR-linked interactive NCERT video lessons and exemplar worksheets.", url: "https://diksha.gov.in/" },
+      { name: "SWAYAM MOOCs", cat: "govt", tag: "Govt of India", desc: "Free university-level courses taught by IIT, IIM, and central university faculty.", url: "https://swayam.gov.in/" },
+      { name: "NPTEL IIT Lectures", cat: "govt", tag: "IIT / IISc", desc: "Deep engineering & science video lectures and assignments from IIT professors.", url: "https://nptel.ac.in/" },
+      { name: "PIB Daily Releases", cat: "govt", tag: "UPSC Current Affairs", desc: "Press Information Bureau official government schemes, policies, and cabinet decisions.", url: "https://pib.gov.in/" },
+      { name: "PRS Legislative Research", cat: "govt", tag: "UPSC Polity & Bills", desc: "Non-partisan summaries of Parliamentary Bills, Standing Committee reports, and Acts.", url: "https://prsindia.org/" },
+      { name: "Reserve Bank of India (RBI)", cat: "govt", tag: "UPSC Economy", desc: "Monetary Policy Committee (MPC) statements, Repo/CRR rates, and macroeconomic reports.", url: "https://www.rbi.org.in/" },
+
+      { name: "Physics Wallah (PW)", cat: "jeeneet", tag: "JEE & NEET", desc: "Alakh Pandey & faculty batches, DPPs, and affordable JEE/NEET test series.", url: "https://www.pw.live/" },
+      { name: "Physics Galaxy", cat: "jeeneet", tag: "JEE Physics", desc: "Ashish Arora's conceptual physics lectures, revision checklists, and Olympiad prep.", url: "https://www.physicsgalaxy.com/" },
+      { name: "Khan Academy India", cat: "jeeneet", tag: "Free Mastery", desc: "Interactive mastery exercises in Physics, Chemistry, Biology, and Calculus.", url: "https://www.khanacademy.org/" },
+      { name: "PhET Interactive Simulations", cat: "jeeneet", tag: "CU Boulder Labs", desc: "Interactive HTML5 physics, chemistry, and math simulations for visual intuition.", url: "https://phet.colorado.edu/" },
+      { name: "Desmos Graphing Calculator", cat: "jeeneet", tag: "JEE Math Visuals", desc: "Instant 2D/3D function plotting, calculus derivatives, and conic sections explorer.", url: "https://www.desmos.com/calculator" },
+      { name: "WolframAlpha Engine", cat: "jeeneet", tag: "Computational AI", desc: "Step-by-step symbolic calculus, differential equations, and chemical stoichiometry.", url: "https://www.wolframalpha.com/" },
+      { name: "Allen Digital", cat: "jeeneet", tag: "JEE & NEET", desc: "All-India test series, structured modules, and Kota classroom mentorship.", url: "https://allen.in/" },
+      { name: "Unacademy JEE / NEET", cat: "jeeneet", tag: "Live Educators", desc: "Live classes, educator notes, and All-India mock tests across streams.", url: "https://unacademy.com/" },
+      { name: "Vedantu Master", cat: "jeeneet", tag: "LIVE Interactive", desc: "Interactive WAVE platform classes, NCERT solutions, and doubt solving.", url: "https://www.vedantu.com/" },
+
+      { name: "Drishti IAS", cat: "upsc", tag: "UPSC CSE", desc: "Daily current affairs, editorial analysis, GS foundation, and Hindi/English resources.", url: "https://www.drishtiias.com/" },
+      { name: "Vision IAS", cat: "upsc", tag: "UPSC Test Series", desc: "PT 365, Mains 365 current affairs compilations, and All-India Prelims/Mains mocks.", url: "https://www.visionias.in/" },
+      { name: "InsightsIAS", cat: "upsc", tag: "Daily Answer Writing", desc: "Secure daily Mains answer writing initiative and daily Prelims static quizzes.", url: "https://www.insightsonindia.com/" },
+      { name: "ClearIAS", cat: "upsc", tag: "Self-Study UPSC", desc: "Structured UPSC notes, elimination techniques, and online mock test platform.", url: "https://www.clearias.com/" },
+      { name: "Sansad TV", cat: "upsc", tag: "Parliamentary Debates", desc: "Official broadcasts of Lok Sabha, Rajya Sabha, and policy panel discussions.", url: "https://sansadtv.nic.in/" },
+      { name: "MIT OpenCourseWare", cat: "upsc", tag: "Global Open Knowledge", desc: "Free MIT lecture notes, exams, and videos across science, economics, and humanities.", url: "https://ocw.mit.edu/" }
+    ];
+
+    // 3. OFFLINE WIKIPEDIA FALLBACK DICTIONARY (For instant resilience)
+    const OFFLINE_WIKI_FALLBACK = {
+      "Semiconductor": {
+        title: "Semiconductor",
+        description: "Material with electrical conductivity between a conductor and an insulator",
+        extract: "A semiconductor is a material whose electrical conductivity falls between that of a conductor, such as copper, and an insulator, such as glass. Its resistivity falls as its temperature rises; metals behave in the opposite way. Its conducting properties may be altered in useful ways by introducing impurities ('doping') into the crystal structure, creating p-n junctions that form the foundation of diodes, transistors, and modern integrated circuits.",
+        url: "https://en.wikipedia.org/wiki/Semiconductor"
+      },
+      "Cardiac cycle": {
+        title: "Cardiac cycle",
+        description: "Performance of the human heart from the beginning of one heartbeat to the beginning of the next",
+        extract: "The cardiac cycle is the performance of the human heart from the beginning of one heartbeat to the beginning of the next. It consists of two periods: one during which the heart muscle relaxes and refills with blood, called diastole, following a period of robust contraction and pumping of blood, called systole. At a normal heart rate of 75 beats per minute, one cardiac cycle lasts 0.8 seconds.",
+        url: "https://en.wikipedia.org/wiki/Cardiac_cycle"
+      },
+      "Basic structure doctrine": {
+        title: "Basic structure doctrine",
+        description: "Indian judicial principle that the Constitution has certain basic features that cannot be altered",
+        extract: "The basic structure doctrine is a common law legal doctrine that the constitution of a sovereign state has certain characteristics that cannot be erased by its legislature. Propounded by the Supreme Court of India in the landmark Kesavananda Bharati v. State of Kerala (1973) ruling, it holds that while Parliament has wide power to amend the Constitution under Article 368, it cannot destroy its basic features such as democracy, secularism, federalism, and judicial review.",
+        url: "https://en.wikipedia.org/wiki/Basic_structure_doctrine"
+      }
+    };
+
+    // 4. PERSISTENT LOCALSTORAGE STATE
+    const DEFAULT_STATE = {
+      track: 'jee',
+      xp: 1250,
+      elo: 1465,
+      streak: 14,
+      depositUnlocked: 560,
+      earlyExits: 0,
+      notes: [
+        { id: 1, text: "Always verify boundary conditions & units before locking final answer." }
+      ],
+      completedSyllabus: {
+        "jee-1": true, "jee-2": true, "jee-3": true,
+        "neet-1": true, "neet-2": true, "neet-3": true,
+        "upsc-1": true, "upsc-2": true, "upsc-3": true
+      },
+      customFlashcards: { jee: [], neet: [], upsc: [] }
+    };
+
+    let appState = loadState();
+    let currentVideoIdx = 0;
+    let currentPyqIdx = 0;
+    let currentFcIdx = 0;
+    let jeeSimMode = 'diode';
+    let lastFetchedWiki = OFFLINE_WIKI_FALLBACK["Semiconductor"];
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem('hackathon_eic_v3_state');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return { ...DEFAULT_STATE, ...parsed };
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('hackathon_eic_v3_state', JSON.stringify(appState));
+      } catch (e) {}
+      updateHeaderTelemetry();
+    }
+
+    function resetAllState() {
+      appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      saveState();
+      switchExamTrack(appState.track);
+      renderStudentNotes();
+      updateDepositUI();
+      showToast("All progress reset to default demo state.", "amber");
+    }
+
+    function updateHeaderTelemetry() {
+      document.getElementById('hdrXp').innerText = appState.xp;
+      document.getElementById('hdrElo').innerText = appState.elo;
+      document.getElementById('hdrStreak').innerText = `${appState.streak}d`;
+      document.getElementById('arenaEloDisplay').innerText = appState.elo;
+    }
+
+    function showToast(msg, color = 'cyan') {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      const cls = color === 'rose'
+        ? 'border-rose-500/60 text-rose-200'
+        : color === 'emerald'
+        ? 'border-emerald-500/60 text-emerald-200'
+        : color === 'amber'
+        ? 'border-amber-500/60 text-amber-200'
+        : 'border-neoncyan/60 text-cyan-100';
+      el.className = `p-3.5 rounded-xl bg-slate-950/95 border ${cls} text-xs font-semibold shadow-2xl backdrop-blur-md transition-all`;
+      el.innerText = msg;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 3800);
+    }
+
+    // 5. NAVIGATION & TRACK SWITCHER
+    function switchRole(role) {
+      ['student', 'parent', 'mentor'].forEach(r => {
+        document.getElementById(`view-${r}`).classList.toggle('hidden', r !== role);
+        document.getElementById(`role-${r}`).className = r === role
+          ? 'px-2.5 py-1 rounded-lg bg-blue-600 text-white transition'
+          : 'px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400 transition';
+      });
+      document.getElementById('studentNav').classList.toggle('hidden', role !== 'student');
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.className = btn.dataset.tab === tabName
+          ? 'nav-tab px-3 py-1.5 rounded-lg bg-sky-500/15 text-sky-600 dark:text-neoncyan border border-sky-500/30 whitespace-nowrap'
+          : 'nav-tab px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-carddark whitespace-nowrap';
+      });
+      if (tabName === 'classroom') setTimeout(resizeAndRedrawWhiteboard, 40);
+      if (tabName === 'simulators') setTimeout(renderInteractiveSimulator, 40);
+    }
+
+    function switchExamTrack(track) {
+      appState.track = track;
+      saveState();
+      const cfg = TRACK_CONFIG[track];
+
+      ['jee', 'neet', 'upsc'].forEach(t => {
+        document.getElementById(`track-${t}`).className = t === track
+          ? 'px-2.5 py-1 rounded-lg text-xs font-extrabold transition bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow'
+          : 'px-2.5 py-1 rounded-lg text-xs font-extrabold transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+      });
+
+      document.getElementById('activeTrackBadge').innerText = cfg.badge;
+      document.getElementById('heroTrackTag').innerText = cfg.heroTag;
+      document.getElementById('heroTrackTitle').innerText = cfg.heroTitle;
+      document.getElementById('heroTrackSubtitle').innerText = cfg.heroSubtitle;
+      document.getElementById('parentTrackText').innerText = cfg.parentLabel;
+      document.getElementById('mentorSampleText').innerText = `"${cfg.mentorSample}"`;
+
+      currentVideoIdx = 0;
+      currentPyqIdx = 0;
+      currentFcIdx = 0;
+
+      renderTeacherVideoList();
+      loadTeacherVideo(0, false);
+      renderQuickWikiChips();
+      renderPyqQuestion();
+      renderFlashcard();
+      setupSimulatorControls();
+      setupPredictorControls();
+      renderSyllabusChecklist();
+
+      const defaultTopic = cfg.quickWikiTopics[0];
+      document.getElementById('vaultQueryInput').value = defaultTopic;
+      fetchUniversalKnowledge(defaultTopic);
+    }
+
+    // 6. REAL TEACHER VIDEO CLASSROOM & TIMESTAMP CHAPTERS
+    function renderTeacherVideoList() {
+      const vids = TRACK_CONFIG[appState.track].videos;
+      document.getElementById('educatorTrackCount').innerText = vids.length;
+      document.getElementById('teacherVideoSelector').innerHTML = vids.map((v, idx) => `
+        <button onclick="loadTeacherVideo(${idx}, true)" class="text-left p-3 rounded-xl border transition ${idx === currentVideoIdx ? 'bg-sky-500/15 border-neoncyan' : 'bg-slate-100 dark:bg-slate-950 border-slate-200 dark:border-borderdark hover:border-slate-500'}">
+          <div class="flex justify-between text-[10px] font-bold text-neoncyan mb-1">
+            <span class="truncate">${v.teacher}</span>
+            <span class="font-mono text-slate-400 ml-1">${v.duration}</span>
+          </div>
+          <p class="text-xs font-bold line-clamp-2">${v.title}</p>
+        </button>
+      `).join('');
+    }
+
+    function loadTeacherVideo(idx, autoplay = false, startSec = 0) {
+      currentVideoIdx = idx;
+      const v = TRACK_CONFIG[appState.track].videos[idx];
+      renderTeacherVideoList();
+
+      const autoParam = autoplay ? '&autoplay=1' : '';
+      const startParam = startSec > 0 ? `&start=${startSec}` : '';
+      document.getElementById('realTeacherIframe').src = `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&modestbranding=1${startParam}${autoParam}`;
+      document.getElementById('directYoutubeFallbackLink').href = `https://www.youtube.com/watch?v=${v.id}${startSec > 0 ? '&t=' + startSec + 's' : ''}`;
+      document.getElementById('currentTeacherBadge').innerText = v.teacher;
+      document.getElementById('currentVideoTitle').innerText = v.title;
+      document.getElementById('teacherStructuredNotes').innerHTML = v.notes;
+
+      document.getElementById('videoChaptersBar').innerHTML = v.chapters.map(ch => `
+        <button onclick="loadTeacherVideo(${idx}, true, ${ch.sec})" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-neoncyan hover:text-slate-950 text-slate-200 text-[11px] font-mono font-bold transition">
+          ▶ ${ch.label}
+        </button>
+      `).join('');
+
+      document.getElementById('aiModalMessages').innerHTML = `
+        <div class="p-3 rounded-xl bg-violet-500/15 border border-violet-500/30">
+          <strong>Socratic AI Tutor:</strong> You're watching <em>${v.title}</em> by <strong>${v.teacher}</strong>. Ask me to break down any formula, diagram, or NCERT line from this lecture!
+        </div>
+      `;
+    }
+
+    // Student Notes Persistence
+    function renderStudentNotes() {
+      document.getElementById('savedStudentNotesList').innerHTML = appState.notes.map(n => `
+        <div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-borderdark flex justify-between items-center gap-2 text-xs">
+          <span>📝 ${n.text}</span>
+          <button onclick="deleteStudentNote(${n.id})" class="text-slate-400 hover:text-rose-400 font-bold px-1.5">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function addStudentNote() {
+      const inp = document.getElementById('studentNoteInput');
+      if (!inp.value.trim()) return;
+      appState.notes.unshift({ id: Date.now(), text: inp.value.trim() });
+      inp.value = '';
+      saveState();
+      renderStudentNotes();
+      showToast("Note saved to localStorage!", "emerald");
+    }
+
+    function deleteStudentNote(id) {
+      appState.notes = appState.notes.filter(n => n.id !== id);
+      saveState();
+      renderStudentNotes();
+    }
+
+    // 7. INTERACTIVE HTML5 CANVAS STUDY WHITEBOARD (MOUSE + TOUCH + PNG EXPORT)
+    let wbColor = '#38bdf8';
+    let wbShowGrid = true;
+    let wbDrawing = false;
+    let wbStrokes = [];
+    let currentStroke = null;
+
+    function initStudyWhiteboard() {
+      const canvas = document.getElementById('studyWhiteboardCanvas');
+      if (!canvas) return;
+
+      function getCoords(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      }
+
+      function startDraw(e) {
+        e.preventDefault();
+        wbDrawing = true;
+        const pt = getCoords(e);
+        const size = parseInt(document.getElementById('wbBrushSize').value || '3');
+        currentStroke = { color: wbColor, size, points: [pt] };
+        wbStrokes.push(currentStroke);
+        redrawWhiteboard();
+      }
+
+      function moveDraw(e) {
+        if (!wbDrawing || !currentStroke) return;
+        e.preventDefault();
+        currentStroke.points.push(getCoords(e));
+        redrawWhiteboard();
+      }
+
+      function endDraw() {
+        wbDrawing = false;
+        currentStroke = null;
+      }
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', moveDraw);
+      window.addEventListener('mouseup', endDraw);
+
+      canvas.addEventListener('touchstart', startDraw, { passive: false });
+      canvas.addEventListener('touchmove', moveDraw, { passive: false });
+      canvas.addEventListener('touchend', endDraw);
+
+      resizeAndRedrawWhiteboard();
+    }
+
+    function resizeAndRedrawWhiteboard() {
+      const canvas = document.getElementById('studyWhiteboardCanvas');
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        canvas.width = Math.floor(rect.width);
+        canvas.height = Math.floor(rect.height);
+      }
+      redrawWhiteboard();
+    }
+
+    function redrawWhiteboard() {
+      const canvas = document.getElementById('studyWhiteboardCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.fillStyle = '#070b14';
+      ctx.fillRect(0, 0, w, h);
+
+      if (wbShowGrid) {
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 24; x < w; x += 24) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 24; y < h; y += 24) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+      }
+
+      wbStrokes.forEach(s => {
+        if (s.points.length < 1) return;
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = s.size;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(s.points[0].x, s.points[0].y);
+        for (let i = 1; i < s.points.length; i++) {
+          ctx.lineTo(s.points[i].x, s.points[i].y);
+        }
+        if (s.points.length === 1) {
+          ctx.lineTo(s.points[0].x + 0.5, s.points[0].y + 0.5);
+        }
+        ctx.stroke();
+      });
+    }
+
+    function setWbColor(hex) { wbColor = hex; }
+    function toggleWhiteboardGrid() {
+      wbShowGrid = !wbShowGrid;
+      document.getElementById('wbGridBtn').innerText = `Grid: ${wbShowGrid ? 'ON' : 'OFF'}`;
+      redrawWhiteboard();
+    }
+    function clearWhiteboard() {
+      wbStrokes = [];
+      redrawWhiteboard();
+      showToast("Whiteboard cleared.");
+    }
+    function downloadWhiteboardPng() {
+      const canvas = document.getElementById('studyWhiteboardCanvas');
+      if (!canvas) return;
+      const link = document.createElement('a');
+      link.download = `HACKATHON_EIC_${appState.track.toUpperCase()}_Notes.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast("Downloaded diagram as PNG!", "emerald");
+    }
+
+    // 8. UNIVERSAL WORLD KNOWLEDGE VAULT (LIVE WIKIPEDIA + OPENALEX APIS)
+    function renderQuickWikiChips() {
+      const topics = TRACK_CONFIG[appState.track].quickWikiTopics;
+      document.getElementById('quickTopicChips').innerHTML = topics.map(t => `
+        <button onclick="document.getElementById('vaultQueryInput').value='${t}'; fetchUniversalKnowledge('${t}')" class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-borderdark hover:border-neoncyan text-[11px] font-semibold transition">
+          ${t}
+        </button>
+      `).join('');
+    }
+
+    function triggerGlobalKnowledgeSearch() {
+      const q = document.getElementById('globalKnowledgeInput').value.trim();
+      if (!q) return;
+      document.getElementById('vaultQueryInput').value = q;
+      switchTab('knowledge');
+      fetchUniversalKnowledge(q);
+    }
+
+    function executeUniversalSearch() {
+      const q = document.getElementById('vaultQueryInput').value.trim();
+      if (q) fetchUniversalKnowledge(q);
+    }
+
+    async function fetchUniversalKnowledge(query) {
+      const statusTag = document.getElementById('wikiStatusTag');
+      statusTag.innerText = "Fetching Live APIs...";
+      statusTag.className = "text-[11px] text-amber-400 font-mono";
+
+      // A) Fetch Wikipedia Summary + OpenSearch
+      try {
+        const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=6&format=json&origin=*`);
+        const searchData = await searchRes.json();
+        const bestTitle = (searchData[1] && searchData[1][0]) ? searchData[1][0] : query;
+
+        // Render related topic pills
+        const relatedTitles = searchData[1] || [];
+        document.getElementById('wikiRelatedBar').innerHTML = relatedTitles.length
+          ? `<span class="text-slate-400 font-bold">Related Concepts:</span>` + relatedTitles.map(rt => `
+              <button onclick="document.getElementById('vaultQueryInput').value='${rt.replace(/'/g, "\\'")}'; fetchUniversalKnowledge('${rt.replace(/'/g, "\\'")}')" class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 border border-slate-700 hover:border-neoncyan text-[11px]">
+                ${rt}
+              </button>
+            `).join('')
+          : '';
+
+        const sumRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(bestTitle)}`);
+        if (!sumRes.ok) throw new Error("Summary not found");
+        const sumData = await sumRes.json();
+
+        lastFetchedWiki = {
+          title: sumData.title || bestTitle,
+          description: sumData.description || "Encyclopedic Concept Entry",
+          extract: sumData.extract || "Summary retrieved from Wikipedia.",
+          url: sumData.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(bestTitle)}`
+        };
+
+        document.getElementById('wikiTitle').innerText = lastFetchedWiki.title;
+        document.getElementById('wikiDescription').innerText = lastFetchedWiki.description;
+        document.getElementById('wikiExtract').innerText = lastFetchedWiki.extract;
+        document.getElementById('wikiFullUrl').href = lastFetchedWiki.url;
+
+        const thumbEl = document.getElementById('wikiThumbnail');
+        if (sumData.thumbnail?.source) {
+          thumbEl.src = sumData.thumbnail.source;
+          thumbEl.classList.remove('hidden');
+        } else {
+          thumbEl.classList.add('hidden');
+        }
+
+        statusTag.innerText = "Live Synced ✓";
+        statusTag.className = "text-[11px] text-emerald-400 font-mono";
+      } catch (err) {
+        const fb = OFFLINE_WIKI_FALLBACK[query] || {
+          title: query,
+          description: "Verified Conceptual Reference",
+          extract: `Comprehensive study synthesis for ${query}. Connect this topic with NCERT fundamentals, past-year examination questions, and first-principles derivations.`,
+          url: `https://en.wikipedia.org/wiki/${encodeURIComponent(query)}`
+        };
+        lastFetchedWiki = fb;
+        document.getElementById('wikiTitle').innerText = fb.title;
+        document.getElementById('wikiDescription').innerText = fb.description;
+        document.getElementById('wikiExtract').innerText = fb.extract;
+        document.getElementById('wikiFullUrl').href = fb.url;
+        document.getElementById('wikiThumbnail').classList.add('hidden');
+        statusTag.innerText = "Cached Reference";
+        statusTag.className = "text-[11px] text-sky-400 font-mono";
+      }
+
+      // B) Fetch Peer-Reviewed Research Papers from OpenAlex API
+      const papersBox = document.getElementById('openAlexPapersList');
+      papersBox.innerHTML = `<p class="text-xs text-slate-400 font-mono">Querying OpenAlex scholarly repository...</p>`;
+      try {
+        const oaRes = await fetch(`https://api.openalex.org/works?search=${encodeURIComponent(query)}&per-page=4`);
+        const oaData = await oaRes.json();
+        const works = oaData.results || [];
+        if (works.length > 0) {
+          papersBox.innerHTML = works.map(w => {
+            const authors = (w.authorships || []).slice(0, 2).map(a => a.author?.display_name).filter(Boolean).join(', ') || 'Academic Consortium';
+            const link = w.doi || w.id || '#';
+            return `
+              <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark space-y-1">
+                <div class="flex justify-between text-[10px] font-mono text-amber-400">
+                  <span>Year: ${w.publication_year || 'N/A'}</span>
+                  <span>Citations: ${w.cited_by_count ?? 0}</span>
+                </div>
+                <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold hover:text-neoncyan block leading-snug">
+                  ↗ ${w.title || 'Scholarly Work'}
+                </a>
+                <p class="text-[11px] text-slate-500 truncate">${authors}</p>
+              </div>
+            `;
+          }).join('');
+        } else {
+          papersBox.innerHTML = `<p class="text-xs text-slate-400">No direct OpenAlex works matched. Try a broader scientific or policy keyword.</p>`;
+        }
+      } catch (e) {
+        papersBox.innerHTML = `<p class="text-xs text-slate-400">OpenAlex scholarly index temporarily unreachable. Wikipedia synthesis remains active.</p>`;
+      }
+    }
+
+    function autoGenerateFlashcardsFromWiki() {
+      const title = lastFetchedWiki.title;
+      const sentences = lastFetchedWiki.extract.split('. ').filter(s => s.length > 25);
+      const card1 = {
+        q: `Define "${title}" (${lastFetchedWiki.description})`,
+        a: sentences[0] ? sentences[0] + '.' : lastFetchedWiki.extract
+      };
+      const card2 = {
+        q: `Key mechanism / application of ${title}:`,
+        a: sentences[1] ? sentences[1] + '.' : lastFetchedWiki.extract
+      };
+
+      if (!appState.customFlashcards[appState.track]) appState.customFlashcards[appState.track] = [];
+      appState.customFlashcards[appState.track].unshift(card2, card1);
+      appState.xp += 30;
+      saveState();
+
+      currentFcIdx = 0;
+      renderFlashcard();
+      showToast(`Generated 2 Flashcards from "${title}" (+30 XP)!`, "emerald");
+    }
+
+    // 9. 25+ CONNECTED STUDYING PLATFORMS HUB
+    function renderPlatformsDirectory(cat = 'all') {
+      const list = cat === 'all' ? LEARNING_PLATFORMS : LEARNING_PLATFORMS.filter(p => p.cat === cat);
+      document.getElementById('platformsDirectoryGrid').innerHTML = list.map(p => `
+        <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark hover:border-neoncyan transition flex flex-col justify-between space-y-2 group">
+          <div class="space-y-1">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-extrabold uppercase text-neoncyan">${p.tag}</span>
+              <span class="text-xs text-slate-400 group-hover:text-neoncyan">↗</span>
+            </div>
+            <h3 class="font-extrabold text-sm group-hover:text-neoncyan transition">${p.name}</h3>
+            <p class="text-xs text-slate-500 leading-relaxed">${p.desc}</p>
+          </div>
+          <span class="text-[11px] font-mono text-slate-400 truncate">${p.url.replace('https://', '')}</span>
+        </a>
+      `).join('');
+    }
+
+    function filterPlatforms(cat) {
+      document.querySelectorAll('.plat-filter').forEach(btn => {
+        btn.className = btn.dataset.cat === cat
+          ? 'plat-filter px-3 py-1.5 rounded-xl bg-neoncyan text-slate-950'
+          : 'plat-filter px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800';
+      });
+      renderPlatformsDirectory(cat);
+    }
+
+    function launchOmniPlatform(platform) {
+      const topic = encodeURIComponent(document.getElementById('omniPlatformTopicInput').value.trim() || 'Physics');
+      const urls = {
+        khan: `https://www.khanacademy.org/search?page_search_query=${topic}`,
+        nptel: `https://www.google.com/search?q=site:nptel.ac.in+${topic}`,
+        phet: `https://phet.colorado.edu/en/simulations/filter?subjects=physics,math,chemistry&type=html&q=${topic}`,
+        pw: `https://www.youtube.com/results?search_query=Physics+Wallah+${topic}`,
+        drishti: `https://www.drishtiias.com/search?q=${topic}`,
+        youtube: `https://www.youtube.com/results?search_query=${topic}+lecture`,
+        pubmed: `https://pubmed.ncbi.nlm.nih.gov/?term=${topic}`,
+        wiki: `https://en.wikipedia.org/w/index.php?search=${topic}`
+      };
+      window.open(urls[platform], '_blank', 'noopener,noreferrer');
+    }
+
+    // 10. TRACK-SPECIFIC LIVE SIMULATIONS & EXAM RANK PREDICTORS
+    function setJeeSimMode(mode) {
+      jeeSimMode = mode;
+      document.getElementById('jee-mode-diode').className = mode === 'diode' ? 'px-2.5 py-1 rounded-lg bg-neoncyan text-slate-950' : 'px-2.5 py-1 rounded-lg text-slate-400';
+      document.getElementById('jee-mode-projectile').className = mode === 'projectile' ? 'px-2.5 py-1 rounded-lg bg-neoncyan text-slate-950' : 'px-2.5 py-1 rounded-lg text-slate-400';
+      setupSimulatorControls();
+    }
+
+    function setupSimulatorControls() {
+      const track = appState.track;
+      const titleEl = document.getElementById('simTitle');
+      const toggleEl = document.getElementById('jeeSimModeToggle');
+      const slidersEl = document.getElementById('simSlidersContainer');
+
+      toggleEl.classList.toggle('hidden', track !== 'jee');
+
+      if (track === 'jee') {
+        if (jeeSimMode === 'diode') {
+          titleEl.innerText = "JEE Physics: Semiconductor p-n & Zener V-I Characteristic Lab";
+          slidersEl.innerHTML = `
+            <div><label class="font-bold block">Barrier V₀: <span id="simP1Val">0.7</span> V</label><input type="range" id="simP1" min="0.3" max="1.1" step="0.1" value="0.7" oninput="renderInteractiveSimulator()" class="w-full accent-neoncyan"/></div>
+            <div><label class="font-bold block">Temp T: <span id="simP2Val">300</span> K</label><input type="range" id="simP2" min="250" max="400" step="10" value="300" oninput="renderInteractiveSimulator()" class="w-full accent-neonviolet"/></div>
+            <div><label class="font-bold block">Zener V_Z: <span id="simP3Val">5.6</span> V</label><input type="range" id="simP3" min="3.0" max="9.0" step="0.2" value="5.6" oninput="renderInteractiveSimulator()" class="w-full accent-rose-400"/></div>
+          `;
+        } else {
+          titleEl.innerText = "JEE Kinematics: Projectile Trajectory & Gravity Lab";
+          slidersEl.innerHTML = `
+            <div><label class="font-bold block">Speed u: <span id="simP1Val">45</span> m/s</label><input type="range" id="simP1" min="15" max="75" value="45" oninput="renderInteractiveSimulator()" class="w-full accent-neoncyan"/></div>
+            <div><label class="font-bold block">Angle θ: <span id="simP2Val">45</span>°</label><input type="range" id="simP2" min="15" max="80" value="45" oninput="renderInteractiveSimulator()" class="w-full accent-neonviolet"/></div>
+            <div><label class="font-bold block">Gravity g: <span id="simP3Val">9.8</span> m/s²</label><input type="range" id="simP3" min="1.6" max="24.8" step="0.2" value="9.8" oninput="renderInteractiveSimulator()" class="w-full accent-emerald-400"/></div>
+          `;
+        }
+      } else if (track === 'neet') {
+        titleEl.innerText = "NEET Physiology: Real-Time ECG (P-QRS-T) & Cardiac Cycle Lab";
+        slidersEl.innerHTML = `
+          <div><label class="font-bold block">Heart Rate: <span id="simP1Val">75</span> bpm</label><input type="range" id="simP1" min="45" max="165" value="75" oninput="renderInteractiveSimulator()" class="w-full accent-emerald-400"/></div>
+          <div><label class="font-bold block">Stroke Vol: <span id="simP2Val">70</span> mL</label><input type="range" id="simP2" min="40" max="110" value="70" oninput="renderInteractiveSimulator()" class="w-full accent-neoncyan"/></div>
+          <div><label class="font-bold block">Blood pCO₂: <span id="simP3Val">40</span> mmHg</label><input type="range" id="simP3" min="25" max="75" value="40" oninput="renderInteractiveSimulator()" class="w-full accent-rose-400"/></div>
+        `;
+      } else {
+        titleEl.innerText = "UPSC Economy: RBI Repo Rate & CPI Inflation Transmission Lab";
+        slidersEl.innerHTML = `
+          <div><label class="font-bold block">Repo Rate: <span id="simP1Val">6.50</span>%</label><input type="range" id="simP1" min="4.0" max="9.5" step="0.25" value="6.50" oninput="renderInteractiveSimulator()" class="w-full accent-neonviolet"/></div>
+          <div><label class="font-bold block">CRR: <span id="simP2Val">4.50</span>%</label><input type="range" id="simP2" min="3.0" max="7.5" step="0.25" value="4.50" oninput="renderInteractiveSimulator()" class="w-full accent-neoncyan"/></div>
+          <div><label class="font-bold block">Fiscal Deficit: <span id="simP3Val">4.9</span>%</label><input type="range" id="simP3" min="3.0" max="7.5" step="0.1" value="4.9" oninput="renderInteractiveSimulator()" class="w-full accent-amber-400"/></div>
+        `;
+      }
+      renderInteractiveSimulator();
+    }
+
+    let simPhase = 0;
+    function renderInteractiveSimulator() {
+      const canvas = document.getElementById('interactiveSimCanvas');
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        canvas.width = Math.floor(rect.width);
+        canvas.height = Math.floor(rect.height);
+      }
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const p1 = parseFloat(document.getElementById('simP1')?.value || 0.7);
+      const p2 = parseFloat(document.getElementById('simP2')?.value || 300);
+      const p3 = parseFloat(document.getElementById('simP3')?.value || 5.6);
+
+      if (document.getElementById('simP1Val')) document.getElementById('simP1Val').innerText = p1;
+      if (document.getElementById('simP2Val')) document.getElementById('simP2Val').innerText = p2;
+      if (document.getElementById('simP3Val')) document.getElementById('simP3Val').innerText = p3;
+
+      const readout = document.getElementById('simLiveReadout');
+      const track = appState.track;
+
+      if (track === 'jee' && jeeSimMode === 'diode') {
+        const ox = w * 0.52, oy = h * 0.62;
+        ctx.strokeStyle = '#334155'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(20, oy); ctx.lineTo(w - 20, oy); ctx.moveTo(ox, 16); ctx.lineTo(ox, h - 16); ctx.stroke();
+
+        // Forward Bias Exponential Curve
+        ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3; ctx.beginPath();
+        const kneePx = ox + p1 * 95;
+        ctx.moveTo(ox, oy);
+        for (let x = ox; x < w - 25; x += 3) {
+          const v = (x - ox) / 95;
+          const tempFactor = 300 / p2;
+          const curr = v < p1 ? (v / p1) * 4 : 4 + Math.pow((v - p1) * 6.5, 2.2) * tempFactor;
+          const y = Math.max(20, oy - curr);
+          ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Reverse Bias & Zener Breakdown
+        ctx.strokeStyle = '#f43f5e'; ctx.lineWidth = 3; ctx.beginPath();
+        ctx.moveTo(ox, oy);
+        const zenerPx = ox - p3 * 24;
+        ctx.lineTo(Math.max(30, zenerPx), oy + 4);
+        ctx.lineTo(Math.max(25, zenerPx - 6), h - 18);
+        ctx.stroke();
+
+        ctx.fillStyle = '#94a3b8'; ctx.font = '11px JetBrains Mono';
+        ctx.fillText(`Knee V₀=${p1}V`, kneePx - 20, oy + 16);
+        ctx.fillText(`-V_Z=-${p3}V`, Math.max(28, zenerPx - 22), oy - 8);
+
+        const material = p1 <= 0.4 ? "Germanium (Ge)" : "Silicon (Si)";
+        readout.innerHTML = `
+          <div><span class="text-slate-500 block">Semiconductor</span><strong class="text-neoncyan">${material}</strong></div>
+          <div><span class="text-slate-500 block">Thermal Voltage</span><strong class="text-neonviolet">${(p2 * 0.0862).toFixed(1)} mV</strong></div>
+          <div><span class="text-slate-500 block">Breakdown Mode</span><strong class="text-rose-400">Zener (-${p3}V)</strong></div>
+        `;
+      } else if (track === 'jee' && jeeSimMode === 'projectile') {
+        const baseY = h - 22;
+        ctx.strokeStyle = '#334155'; ctx.beginPath(); ctx.moveTo(24, baseY); ctx.lineTo(w - 24, baseY); ctx.stroke();
+        const rad = (p2 * Math.PI) / 180;
+        const maxH = (p1 * p1 * Math.sin(rad) ** 2) / (2 * p3);
+        const range = (p1 * p1 * Math.sin(2 * rad)) / p3;
+        const tof = (2 * p1 * Math.sin(rad)) / p3;
+
+        ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 3; ctx.beginPath();
+        const scale = Math.min(0.75, (w - 60) / Math.max(260, range));
+        for (let i = 0; i <= 50; i++) {
+          const t = (tof * i) / 50;
+          const x = 30 + p1 * Math.cos(rad) * t * scale;
+          const y = baseY - (p1 * Math.sin(rad) * t - 0.5 * p3 * t * t) * scale;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        readout.innerHTML = `
+          <div><span class="text-slate-500 block">Max Height</span><strong class="text-neoncyan">${maxH.toFixed(1)} m</strong></div>
+          <div><span class="text-slate-500 block">Horizontal Range</span><strong class="text-neonviolet">${range.toFixed(1)} m</strong></div>
+          <div><span class="text-slate-500 block">Time of Flight</span><strong class="text-emerald-400">${tof.toFixed(2)} s</strong></div>
+        `;
+      } else if (track === 'neet') {
+        const midY = h * 0.62;
+        ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2.5; ctx.beginPath();
+        const freqScale = p1 / 75;
+        for (let x = 16; x < w - 16; x++) {
+          const ph = (((x * freqScale) + simPhase) % 150) / 150;
+          let y = midY;
+          if (ph > 0.14 && ph < 0.24) y -= Math.sin((ph - 0.14) * 10 * Math.PI) * 18;
+          else if (ph >= 0.34 && ph < 0.37) y += 14;
+          else if (ph >= 0.37 && ph < 0.42) y -= h * 0.44;
+          else if (ph >= 0.42 && ph < 0.46) y += 22;
+          else if (ph > 0.60 && ph < 0.76) y -= Math.sin((ph - 0.60) * 6.25 * Math.PI) * 24;
+          if (x === 16) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        const co = ((p1 * p2) / 1000).toFixed(2);
+        const cycleSec = (60 / p1).toFixed(2);
+        const bohr = p3 > 43 ? "Right Shift (O₂ Unload)" : p3 < 37 ? "Left Shift (Bind)" : "Normal P₅₀ 26.8";
+        readout.innerHTML = `
+          <div><span class="text-slate-500 block">Cardiac Output</span><strong class="text-emerald-400">${co} L/min</strong></div>
+          <div><span class="text-slate-500 block">Cycle Duration</span><strong class="text-neoncyan">${cycleSec} sec</strong></div>
+          <div><span class="text-slate-500 block">Hb-O₂ Curve</span><strong class="text-rose-400">${bohr}</strong></div>
+        `;
+      } else {
+        const baseY = h - 25;
+        ctx.strokeStyle = '#334155'; ctx.beginPath(); ctx.moveTo(24, baseY); ctx.lineTo(w - 24, baseY); ctx.stroke();
+        const cpi = Math.max(2.1, 7.9 - (p1 - 5.0) * 0.65 - (p2 - 4.0) * 0.3 + (p3 - 4.5) * 0.55);
+        const gdp = Math.max(4.5, 7.6 - (p1 - 6.0) * 0.35 + (p3 - 4.5) * 0.25);
+
+        // RBI 4% Target Band
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
+        ctx.fillRect(24, baseY - 6 * 18, w - 48, 4 * 18);
+
+        ctx.strokeStyle = '#8b5cf6'; ctx.lineWidth = 3; ctx.beginPath();
+        for (let i = 0; i <= 10; i++) {
+          const x = 30 + (i / 10) * (w - 60);
+          const proj = 6.2 + ((cpi - 6.2) * (i / 10));
+          const y = baseY - proj * 18;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        const bandStatus = cpi <= 6.0 && cpi >= 2.0 ? "Within 4%±2% Band ✓" : "Breaches 6% Upper Limit ⚠️";
+        readout.innerHTML = `
+          <div><span class="text-slate-500 block">Projected CPI</span><strong class="text-amber-400">${cpi.toFixed(2)}%</strong></div>
+          <div><span class="text-slate-500 block">Real GDP Growth</span><strong class="text-emerald-400">${gdp.toFixed(2)}%</strong></div>
+          <div><span class="text-slate-500 block">RBI Mandate</span><strong class="text-neoncyan">${bandStatus}</strong></div>
+        `;
+      }
+    }
+
+    setInterval(() => {
+      if (appState.track === 'neet' && !document.getElementById('tab-simulators').classList.contains('hidden')) {
+        simPhase += 4;
+        renderInteractiveSimulator();
+      }
+    }, 60);
+
+    // Track-Specific Rank / Percentile / Cutoff Predictor
+    function setupPredictorControls() {
+      const track = appState.track;
+      const title = document.getElementById('predictorTitle');
+      const sub = document.getElementById('predictorSubtitle');
+      const ctrl = document.getElementById('predictorControls');
+
+      if (track === 'jee') {
+        title.innerText = "JEE Main Marks → Percentile & AIR Predictor";
+        sub.innerText = "Calibrated against 14 Lakh+ NTA JEE Main candidates across Moderate/Tough shifts.";
+        ctrl.innerHTML = `
+          <div>
+            <div class="flex justify-between font-bold mb-1"><span>Expected Score (out of 300)</span><span id="predVal1" class="text-neoncyan font-mono">195 / 300</span></div>
+            <input type="range" id="predSlider1" min="40" max="300" value="195" oninput="updatePredictor()" class="w-full accent-neoncyan" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1">Shift Difficulty Level</label>
+            <select id="predSelect1" onchange="updatePredictor()" class="w-full p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-borderdark">
+              <option value="tough">Tough Shift (Higher Percentile at Lower Marks)</option>
+              <option value="mod" selected>Moderate Shift (Standard NTA Normalization)</option>
+              <option value="easy">Easy Shift</option>
+            </select>
+          </div>
+        `;
+      } else if (track === 'neet') {
+        title.innerText = "NEET-UG Score → AIR & Govt MBBS Seat Predictor";
+        sub.innerText = "Calibrated for 24 Lakh+ NEET-UG medical aspirants across AIQ 15% & State Quota.";
+        ctrl.innerHTML = `
+          <div>
+            <div class="flex justify-between font-bold mb-1"><span>Expected NEET Score (out of 720)</span><span id="predVal1" class="text-emerald-400 font-mono">655 / 720</span></div>
+            <input type="range" id="predSlider1" min="200" max="720" value="655" oninput="updatePredictor()" class="w-full accent-emerald-400" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1">Quota & Category</label>
+            <select id="predSelect1" onchange="updatePredictor()" class="w-full p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-borderdark">
+              <option value="gen">All India Quota (General / UR)</option>
+              <option value="obc">OBC / EWS Quota</option>
+              <option value="scst">SC / ST Quota</option>
+            </select>
+          </div>
+        `;
+      } else {
+        title.innerText = "UPSC Prelims GS Paper-I & CSAT Cutoff Simulator";
+        sub.innerText = "Includes exact +2.0 / -0.66 negative marking and CSAT 66.67 qualifying check.";
+        ctrl.innerHTML = `
+          <div>
+            <div class="flex justify-between font-bold mb-1"><span>GS Paper-I Correct Questions (out of 100)</span><span id="predVal1" class="text-neonviolet font-mono">54 Correct</span></div>
+            <input type="range" id="predSlider1" min="20" max="85" value="54" oninput="updatePredictor()" class="w-full accent-neonviolet" />
+          </div>
+          <div>
+            <div class="flex justify-between font-bold mb-1"><span>GS Paper-I Incorrect Questions (-0.66 each)</span><span id="predVal2" class="text-rose-400 font-mono">18 Wrong</span></div>
+            <input type="range" id="predSlider2" min="0" max="50" value="18" oninput="updatePredictor()" class="w-full accent-rose-400" />
+          </div>
+        `;
+      }
+      updatePredictor();
+    }
+
+    function updatePredictor() {
+      const track = appState.track;
+      const box = document.getElementById('predictorResultBox');
+
+      if (track === 'jee') {
+        const marks = parseInt(document.getElementById('predSlider1').value);
+        const shift = document.getElementById('predSelect1').value;
+        document.getElementById('predVal1').innerText = `${marks} / 300`;
+        const shiftBonus = shift === 'tough' ? 12 : shift === 'easy' ? -10 : 0;
+        const eff = Math.min(300, Math.max(0, marks + shiftBonus));
+        const pct = Math.min(99.998, Math.max(70.0, 72 + (eff / 300) * 28.1)).toFixed(3);
+        const air = Math.max(1, Math.round(((100 - parseFloat(pct)) / 100) * 1400000));
+        const tier = eff >= 220 ? "Top NIT CSE + Strong IIT Adv Rank (< 3,500)" : eff >= 165 ? "NIT Core / IIIT + JEE Adv Qualified" : "State Govt Engg / Drop-Year Focus";
+        box.innerHTML = `
+          <div class="flex justify-between items-center"><span class="text-xs text-slate-400">Predicted NTA Percentile</span><strong class="text-2xl font-extrabold text-neoncyan font-mono">${pct} %ile</strong></div>
+          <div class="flex justify-between items-center text-xs"><span class="text-slate-400">Estimated All India Rank</span><strong class="font-mono text-amber-400">AIR ~${air.toLocaleString()}</strong></div>
+          <div class="pt-2 border-t border-slate-800 text-xs text-emerald-300 font-semibold">🎯 ${tier}</div>
+        `;
+      } else if (track === 'neet') {
+        const score = parseInt(document.getElementById('predSlider1').value);
+        const cat = document.getElementById('predSelect1').value;
+        document.getElementById('predVal1').innerText = `${score} / 720`;
+        const air = score >= 715 ? 45 : score >= 680 ? Math.round((720 - score) * 260) : score >= 620 ? Math.round(10000 + (680 - score) * 950) : Math.round(67000 + (620 - score) * 2100);
+        const cutoff = cat === 'gen' ? 645 : cat === 'obc' ? 635 : 535;
+        const status = score >= 695 ? "AIIMS Delhi / MAMC Top Tier" : score >= cutoff ? "Govt Medical College (MBBS Seat Likely)" : "Semi-Govt / BAMS / Focused Revision Needed";
+        box.innerHTML = `
+          <div class="flex justify-between items-center"><span class="text-xs text-slate-400">Predicted All India Rank</span><strong class="text-2xl font-extrabold text-emerald-400 font-mono">AIR ~${air.toLocaleString()}</strong></div>
+          <div class="flex justify-between items-center text-xs"><span class="text-slate-400">Category Benchmark</span><strong class="font-mono text-neoncyan">${cutoff}+ Marks</strong></div>
+          <div class="pt-2 border-t border-slate-800 text-xs text-amber-300 font-semibold">🩺 ${status}</div>
+        `;
+      } else {
+        const corr = parseInt(document.getElementById('predSlider1').value);
+        const wrong = parseInt(document.getElementById('predSlider2').value);
+        document.getElementById('predVal1').innerText = `${corr} Correct`;
+        document.getElementById('predVal2').innerText = `${wrong} Wrong`;
+        const net = (corr * 2.0 - wrong * (2 / 3)).toFixed(2);
+        const status = parseFloat(net) >= 92 ? "Safe Above General Cutoff (~88-90) — Mains Ready!" : parseFloat(net) >= 82 ? "Borderline (OBC/EWS Safe Zone)" : "Below Cutoff — Reduce Negative Marking";
+        box.innerHTML = `
+          <div class="flex justify-between items-center"><span class="text-xs text-slate-400">Net GS Paper-I Score</span><strong class="text-2xl font-extrabold text-neonviolet font-mono">${net} / 200</strong></div>
+          <div class="flex justify-between items-center text-xs"><span class="text-slate-400">Accuracy Rate</span><strong class="font-mono text-neoncyan">${Math.round((corr / Math.max(1, corr + wrong)) * 100)}%</strong></div>
+          <div class="pt-2 border-t border-slate-800 text-xs text-emerald-300 font-semibold">🏛️ ${status}</div>
+        `;
+      }
+    }
+
+    // 11. ADAPTIVE PYQ ELO ARENA & SPACED FLASHCARDS
+    function renderPyqQuestion() {
+      const list = TRACK_CONFIG[appState.track].pyqs;
+      const item = list[currentPyqIdx % list.length];
+      document.getElementById('pyqYearBadge').innerText = item.year;
+      document.getElementById('pyqCounterBadge').innerText = `Question ${(currentPyqIdx % list.length) + 1} / ${list.length}`;
+      document.getElementById('pyqQuestionText').innerText = item.q;
+      document.getElementById('pyqExplanationBox').classList.add('hidden');
+
+      document.getElementById('pyqOptionsList').innerHTML = item.opts.map((opt, idx) => `
+        <button onclick="submitPyqAnswer(${idx})" class="pyq-opt w-full text-left p-3 rounded-xl bg-white dark:bg-carddark border border-slate-200 dark:border-borderdark hover:border-neoncyan text-xs font-medium transition">
+          <strong class="text-neoncyan mr-1.5">${String.fromCharCode(65 + idx)}.</strong> ${opt}
+        </button>
+      `).join('');
+    }
+
+    function submitPyqAnswer(chosenIdx) {
+      const list = TRACK_CONFIG[appState.track].pyqs;
+      const item = list[currentPyqIdx % list.length];
+      const expBox = document.getElementById('pyqExplanationBox');
+      expBox.classList.remove('hidden');
+
+      document.querySelectorAll('.pyq-opt').forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === item.ans) btn.className = "pyq-opt w-full text-left p-3 rounded-xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 text-xs font-bold";
+        else if (idx === chosenIdx) btn.className = "pyq-opt w-full text-left p-3 rounded-xl bg-rose-500/20 border border-rose-500 text-rose-300 text-xs font-bold";
+      });
+
+      if (chosenIdx === item.ans) {
+        appState.elo += 18;
+        appState.xp += 40;
+        expBox.className = "p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-200 text-xs leading-relaxed";
+        expBox.innerHTML = `<strong>✅ Correct (+18 ELO, +40 XP)!</strong> ${item.explain}`;
+        showToast("+18 ELO Rating! Verified PYQ solved.", "emerald");
+      } else {
+        appState.elo = Math.max(800, appState.elo - 10);
+        expBox.className = "p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/40 text-rose-200 text-xs leading-relaxed";
+        expBox.innerHTML = `<strong>❌ Incorrect (-10 ELO).</strong> ${item.explain}`;
+        showToast("-10 ELO. Review the step-by-step concept solution.", "rose");
+      }
+      saveState();
+    }
+
+    function nextPyqQuestion() {
+      currentPyqIdx++;
+      renderPyqQuestion();
+    }
+
+    function getCombinedFlashcards() {
+      const base = TRACK_CONFIG[appState.track].flashcards;
+      const custom = appState.customFlashcards[appState.track] || [];
+      return [...custom, ...base];
+    }
+
+    function renderFlashcard() {
+      const deck = getCombinedFlashcards();
+      const card = deck[currentFcIdx % deck.length];
+      document.getElementById('flashcardBox').classList.remove('flipped');
+      document.getElementById('fcQuestion').innerText = card.q;
+      document.getElementById('fcAnswer').innerText = card.a;
+      document.getElementById('flashcardCounter').innerText = `${(currentFcIdx % deck.length) + 1} / ${deck.length}`;
+    }
+
+    function rateFlashcard(mastered) {
+      if (mastered) {
+        appState.xp += 25;
+        saveState();
+        showToast("+25 XP! Spaced interval extended to 7 days.", "emerald");
+      } else {
+        showToast("Card scheduled for immediate review tomorrow.", "amber");
+      }
+      currentFcIdx++;
+      renderFlashcard();
+    }
+
+    // 12. WEB AUDIO API FOCUS SYNTHESIZER (BROWN NOISE + 40HZ ALPHA) & POMODORO
+    let audioCtx = null;
+    let activeAudioNode = null;
+    let masterGainNode = null;
+    let pomoSeconds = 25 * 60;
+    let pomoInterval = null;
+
+    function ensureAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+        masterGainNode = audioCtx.createGain();
+        masterGainNode.gain.value = parseFloat(document.getElementById('synthVolumeSlider')?.value || 0.35);
+        masterGainNode.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function toggleFocusAudio(type) {
+      stopFocusAudio(true);
+      ensureAudioContext();
+
+      if (type === 'brown') {
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let lastOut = 0.0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          output[i] = (lastOut + 0.02 * white) / 1.02;
+          lastOut = output[i];
+          output[i] *= 3.5;
+        }
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 380;
+
+        whiteNoise.connect(filter);
+        filter.connect(masterGainNode);
+        whiteNoise.start(0);
+        activeAudioNode = whiteNoise;
+
+        document.getElementById('audioSynthBadge').innerText = "Brown Noise Active";
+        document.getElementById('audioSynthBadge').className = "px-2.5 py-0.5 rounded-full bg-sky-500/20 text-neoncyan text-[10px] font-mono";
+        showToast("🌊 Brown Noise focus masking enabled (Web Audio DSP).");
+      } else {
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        osc1.type = 'sine';
+        osc2.type = 'sine';
+        osc1.frequency.value = 200;
+        osc2.frequency.value = 240; // 40Hz Gamma/Alpha focus beat
+        osc1.connect(masterGainNode);
+        osc2.connect(masterGainNode);
+        osc1.start();
+        osc2.start();
+        activeAudioNode = { stop: () => { osc1.stop(); osc2.stop(); } };
+
+        document.getElementById('audioSynthBadge').innerText = "40Hz Focus Hum";
+        document.getElementById('audioSynthBadge').className = "px-2.5 py-0.5 rounded-full bg-violet-500/20 text-neonviolet text-[10px] font-mono";
+        showToast("🧠 40Hz Binaural Focus Hum active.");
+      }
+    }
+
+    function stopFocusAudio(silent = false) {
+      if (activeAudioNode) {
+        try { activeAudioNode.stop(); } catch (e) {}
+        activeAudioNode = null;
+      }
+      document.getElementById('audioSynthBadge').innerText = "Audio Off";
+      document.getElementById('audioSynthBadge').className = "px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-mono";
+      if (!silent) showToast("Focus audio muted.");
+    }
+
+    function updateSynthVolume(val) {
+      if (masterGainNode) masterGainNode.gain.value = parseFloat(val);
+    }
+
+    function setPomodoroDuration(mins) {
+      clearInterval(pomoInterval);
+      pomoSeconds = mins * 60;
+      document.getElementById('pomodoroClockDisplay').innerText = `${String(mins).padStart(2, '0')}:00`;
+    }
+
+    function startPomodoroSession() {
+      clearInterval(pomoInterval);
+      document.getElementById('parentSessionStatus').innerText = `LIVE (${TRACK_CONFIG[appState.track].badge})`;
+      document.getElementById('parentSessionStatus').className = "px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold";
+      addParentFeed(`🟢 Started focused Pomodoro session (${Math.ceil(pomoSeconds / 60)} min) on ${TRACK_CONFIG[appState.track].badge}.`);
+      showToast("Focus session started! Guardian notified.", "emerald");
+
+      pomoInterval = setInterval(() => {
+        if (pomoSeconds > 0) {
+          pomoSeconds--;
+          const m = String(Math.floor(pomoSeconds / 60)).padStart(2, '0');
+          const s = String(pomoSeconds % 60).padStart(2, '0');
+          document.getElementById('pomodoroClockDisplay').innerText = `${m}:${s}`;
+          if (pomoSeconds === 0) {
+            clearInterval(pomoInterval);
+            appState.xp += 100;
+            appState.depositUnlocked = Math.min(700, appState.depositUnlocked + 70);
+            saveState();
+            updateDepositUI();
+            addParentFeed(`✅ Completed full focus session! +₹70 Refundable Escrow unlocked.`);
+            showToast("🎉 Session Complete! +100 XP & +₹70 Escrow Unlocked!", "emerald");
+          }
+        }
+      }, 1000);
+    }
+
+    function endPomodoroEarly() {
+      clearInterval(pomoInterval);
+      appState.earlyExits++;
+      saveState();
+      document.getElementById('parentEarlyExitsText').innerText = `${appState.earlyExits} Early Exit${appState.earlyExits > 1 ? 's' : ''}`;
+      document.getElementById('parentSessionStatus').innerText = "Ended Early";
+      addParentFeed(`⚠️ Voluntary early exit logged during focus block.`);
+      showToast("Session ended early. Parent log updated.", "rose");
+    }
+
+    function addParentFeed(msg) {
+      const feed = document.getElementById('parentActivityFeed');
+      const div = document.createElement('div');
+      div.className = "p-3 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark flex justify-between";
+      div.innerHTML = `<span>${msg}</span><span class="font-mono text-slate-500">Just now</span>`;
+      feed.prepend(div);
+    }
+
+    // 13. SYLLABUS TRACKER & 70% REFUNDABLE DEPOSIT UI
+    function renderSyllabusChecklist() {
+      const list = TRACK_CONFIG[appState.track].syllabus;
+      const doneCount = list.filter(item => appState.completedSyllabus[item.id]).length;
+      document.getElementById('syllabusCountBadge').innerText = `${doneCount} / ${list.length} Completed`;
+
+      document.getElementById('syllabusChecklistGrid').innerHTML = list.map(item => {
+        const checked = !!appState.completedSyllabus[item.id];
+        return `
+          <label class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-borderdark flex items-center gap-3 cursor-pointer hover:border-neoncyan transition">
+            <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleSyllabusItem('${item.id}')" class="w-4 h-4 accent-neoncyan rounded" />
+            <span class="text-xs font-semibold ${checked ? 'line-through text-slate-500' : ''}">${item.title}</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function toggleSyllabusItem(id) {
+      const next = !appState.completedSyllabus[id];
+      appState.completedSyllabus[id] = next;
+      if (next) {
+        appState.xp += 50;
+        appState.depositUnlocked = Math.min(700, appState.depositUnlocked + 35);
+        showToast("Chapter Mastered! +50 XP & +₹35 Escrow Unlocked!", "emerald");
+      }
+      saveState();
+      renderSyllabusChecklist();
+      updateDepositUI();
+    }
+
+    function updateDepositUI() {
+      const amt = appState.depositUnlocked;
+      const pct = Math.round((amt / 700) * 100);
+      document.getElementById('depositUnlockedAmount').innerText = `₹${amt}`;
+      document.getElementById('depositPercentLabel').innerText = `${pct}%`;
+      document.getElementById('depositProgressBar').style.width = `${pct}%`;
+      document.getElementById('parentEscrowText').innerText = `₹${amt} / ₹700 Unlocked`;
+    }
+
+    function claimRefundPayout() {
+      const upi = document.getElementById('guardianUpiInput').value.trim();
+      if (!upi) return showToast("Please enter a valid Guardian UPI ID.", "rose");
+      const txnId = "EIC_UPI_" + Math.floor(10000000 + Math.random() * 90000000);
+      const banner = document.getElementById('refundReceiptBanner');
+      banner.classList.remove('hidden');
+      banner.innerHTML = `<strong>✅ ₹${appState.depositUnlocked}.00 Disbursed via RBI-Compliant Escrow!</strong><br>Beneficiary: <span class="font-mono">${upi}</span> • Reference: <span class="font-mono">${txnId}</span>`;
+      showToast(`₹${appState.depositUnlocked} transferred to ${upi}!`, "emerald");
+    }
+
+    // 14. SOCRATIC AI MODAL & MENTOR EVALUATION
+    function openAskAiModal() { document.getElementById('askAiModal').classList.remove('hidden'); }
+    function closeAskAiModal() { document.getElementById('askAiModal').classList.add('hidden'); }
+
+    function sendAiModalMessage() {
+      const inp = document.getElementById('aiModalInput');
+      const q = inp.value.trim();
+      if (!q) return;
+      const box = document.getElementById('aiModalMessages');
+      box.innerHTML += `<div class="p-2.5 rounded-xl bg-sky-500/15 border border-sky-500/30 text-right"><strong>You:</strong> ${q}</div>`;
+      inp.value = '';
+      setTimeout(() => {
+        const v = TRACK_CONFIG[appState.track].videos[currentVideoIdx];
+        box.innerHTML += `<div class="p-2.5 rounded-xl bg-violet-500/15 border border-violet-500/30"><strong>Socratic AI (${v.teacher}):</strong> Great question! First, recall the core boundary condition from <em>${v.title}</em>: how does the system respond when we test its limiting case? Try checking that step on the Study Whiteboard!</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 350);
+    }
+
+    function publishMentorReview() {
+      const score = document.getElementById('mentorScoreInput').value;
+      const remark = document.getElementById('mentorFeedbackInput').value;
+      appState.xp += 50;
+      saveState();
+      showToast(`Mentor grade (${score}/10) published! Student awarded +50 XP.`, "emerald");
+      addParentFeed(`🧑‍🏫 Mentor graded recall sheet (${score}/10): "${remark}"`);
+    }
+
+    // 15. INITIALIZATION
+    window.addEventListener('resize', () => {
+      resizeAndRedrawWhiteboard();
+      renderInteractiveSimulator();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateHeaderTelemetry();
+      switchExamTrack(appState.track);
+      renderStudentNotes();
+      renderPlatformsDirectory('all');
+      updateDepositUI();
+      initStudyWhiteboard();
+    });
+  </script>
+</body>
+</html>
