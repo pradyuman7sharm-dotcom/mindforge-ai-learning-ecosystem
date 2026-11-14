@@ -31,6 +31,29 @@ Students preparing for competitive examinations often struggle with fragmented l
 MindForge brings learning, planning, AI-powered tutoring, revision, and accountability together in one unified ecosystem.
 
 **Our mission:** Help every aspirant learn smarter, stay consistent, and achieve their academic goals.
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (recommended: latest LTS version)
+- npm
+- Gemini API key
+
+### Installation
+
+1. Clone the repository:
+   `git clone https://github.com/pradyuman7sharm-dotcom/mindforge-ai-learning-ecosystem.git`
+
+2. Open the project folder:
+   `cd mindforge-ai-learning-ecosystem`
+
+3. Install dependencies:
+   `npm install`
+
+4. Configure your environment variables using `.env.example`.
+
+5. Start the development server:
+   `npm run dev`
 ---
 ## 📸 MindForge Application Screenshots
 
