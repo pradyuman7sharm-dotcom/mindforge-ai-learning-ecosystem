@@ -25,7 +25,25 @@ MindForge is a full-stack, track-isolated learning and accountability platform b
 - [Architectural & Technical Notes](#architectural--technical-notes)
 
 ---
+## 📸 MindForge Application Screenshots
 
+![Screenshot 1](screenshots/Screenshot%202026-11-14%20062920.png)
+
+![Screenshot 2](screenshots/Screenshot%202026-11-14%20063023.png)
+
+![Screenshot 3](screenshots/Screenshot%202026-11-14%20063042.png)
+
+![Screenshot 4](screenshots/Screenshot%202026-11-14%20063118.png)
+
+![Screenshot 5](screenshots/Screenshot%202026-11-14%20063153.png)
+
+![Screenshot 6](screenshots/Screenshot%202026-11-14%20063209.png)
+
+![Screenshot 7](screenshots/Screenshot%202026-11-14%20063225.png)
+
+![Screenshot 8](screenshots/Screenshot%202026-11-14%20063242.png)
+
+![Screenshot 9](screenshots/Screenshot%202026-11-14%20063259.png)
 ## Key Capabilities
 
 ### Pre-Opening Interactive Field Library
