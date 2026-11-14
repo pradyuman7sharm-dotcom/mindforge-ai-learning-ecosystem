@@ -292,3 +292,15 @@ MindForge uses the **Field Manuals Editorial** palette across both Espresso Dark
 1. **Focus Mode & Device Monitoring**: Because web applications run inside browser sandboxes, MindForge uses the `visibilitychange` API (`tabInterruptions`) to log tab switches honestly during Focus Mode rather than claiming OS-level app blocking (which requires native mobile permissions).
 2. **Escrow Deposit Workflow**: The 70% completion deposit ledger separates the refundable deposit (`₹700`) from the platform fee (`₹300`), enforces guardian authorization for under-18 compliance, and executes an explicit payout endpoint (`/api/deposits/payout`) returning a verifiable transaction reference (`MFG-ESCROW-*`).
 3. **Healthy Gamification**: Streak counters, XP, ELO, and micro-lecture caps (`<= 20 min`) are structured around cognitive retrieval intervals and rest breaks to reward deep mastery rather than passive screen time.
+## 🔮 Future Enhancements
+
+- Mobile application for Android and iOS.
+- Advanced AI-powered performance analytics.
+- Personalized learning recommendations.
+- More interactive 3D science simulations.
+- Enhanced guardian dashboards and progress reports.
+- Expanded educator and learning-resource ecosystem.
+
+## 👨‍💻 Built For
+
+A college-level hackathon project focused on transforming competitive exam preparation through AI, technology, and student accountability.
