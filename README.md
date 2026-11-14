@@ -24,6 +24,13 @@ MindForge is a full-stack, track-isolated learning and accountability platform b
 - [Build, Type-Check & Deployment](#build-type-check--deployment)
 - [Architectural & Technical Notes](#architectural--technical-notes)
 
+## 🎯 Why MindForge?
+
+Students preparing for competitive examinations often struggle with fragmented learning resources, inconsistent study routines, lack of personalized guidance, and poor accountability.
+
+MindForge brings learning, planning, AI-powered tutoring, revision, and accountability together in one unified ecosystem.
+
+**Our mission:** Help every aspirant learn smarter, stay consistent, and achieve their academic goals.
 ---
 ## 📸 MindForge Application Screenshots
 
