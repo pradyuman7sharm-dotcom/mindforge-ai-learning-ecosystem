@@ -54,7 +54,22 @@ MindForge brings learning, planning, AI-powered tutoring, revision, and accounta
 
 5. Start the development server:
    `npm run dev`
+
+## 🏗️ System Architecture
+
+MindForge follows a full-stack architecture:
+
+- **Frontend:** React, TypeScript, Tailwind CSS and Vite.
+- **Backend:** Node.js and Express.
+- **AI Integration:** Google Gemini API.
+- **Research Integration:** Wikipedia and OpenAlex.
+- **Educational Content:** YouTube integration.
+- **Learning Modules:** Study planning, AI tutoring, quizzes, flashcards and interactive simulations.
+
+The frontend communicates with backend API endpoints, which handle AI-powered operations and application services.
 ---
+
+
 ## 📸 MindForge Application Screenshots
 
 ![Screenshot 1](screenshots/Screenshot%202026-11-14%20062920.png)
