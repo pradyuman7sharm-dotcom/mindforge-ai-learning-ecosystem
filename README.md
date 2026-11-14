@@ -1,3 +1,10 @@
+
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![AI Powered](https://img.shields.io/badge/AI-Gemini-8E75B2?logo=googlegemini&logoColor=white)
+![License](https://img.shields.io/badge/License-Not%20Specified-lightgrey)
+
 # MindForge — AI Learning & Accountability Ecosystem
 
 MindForge is a full-stack, track-isolated learning and accountability platform built for **JEE**, **NEET**, and **UPSC** aspirants. It combines a 3D interactive Field Library pre-opening showcase with a time-adaptive study workspace, verified YouTube educator classrooms, live Wikipedia & OpenAlex research ingestion, Socratic AI tutoring, interactive physics/biology/economics simulations, and a guardian-linked 70% refundable completion deposit ledger.
